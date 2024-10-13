@@ -1,0 +1,14 @@
+#custom PATHs
+export PATH="$HOME/.config/emacs/bin:$PATH"
+
+#custom aliases
+
+#custom terminal functions
+cdfzf() {
+  local selected_dir
+  selected_dir=$(find ${1:-.} -path '*/\.*' -prune -o -type d -print 2> /dev/null | fzf +m) && \
+  cd "$selected_dir"
+}
+
+#custom commands to execute after terminal boots up
+cat ~/path/to/terminalWelcomeMessage.txt

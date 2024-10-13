@@ -51,7 +51,7 @@ local plugins = {
         branch = "v3.x",
         dependencies = {
             "nvim-lua/plenary.nvim",
-            "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
+            "nvim-tree/nvim-web-devicons",
             "MunifTanjim/nui.nvim",
         }
     },
@@ -88,11 +88,10 @@ local plugins = {
         end
     },
     {
-        {
-            "L3MON4D3/LuaSnip",
-            version = "v2.*",
-            build = "make install_jsregexp"
-        }
+        -- snippet provider
+        "L3MON4D3/LuaSnip",
+        version = "v2.*",
+        build = "make install_jsregexp"
     },
     {
         -- auto-completion server
