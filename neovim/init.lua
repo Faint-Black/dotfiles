@@ -1,5 +1,8 @@
 -- TODO:  lsp-attach coding specific keybinds
 
+-------------------------------------------------------------------------------
+-- PACKAGE/PLUGIN CONFIGS
+-------------------------------------------------------------------------------
 
 -- Install package manager, if not installed already
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -16,7 +19,8 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 
--- Set up packages
+
+-- Set up and configure packages
 local plugins = {
     {
         -- syntax highlighter
@@ -28,7 +32,7 @@ local plugins = {
                 ensure_installed = { "lua", "vim", "vimdoc", "c", "cpp", "haskell", "zig" },
                 sync_install = false,
                 highlight = { enable = true },
-                indent = { enable = false },
+                indent = { enable = true },
             })
         end
     },
@@ -181,11 +185,13 @@ local plugins = {
                 },
                 min_length = 1,
                 mapping = cmp.mapping.preset.insert({
-                    --["<C-b>"] = cmp.mapping.scroll_docs(-4),
-                    --["<C-f>"] = cmp.mapping.scroll_docs(4),
-                    --["<C-Space>"] = cmp.mapping.complete(),
-                    --["<C-e>"] = cmp.mapping.abort(),
-                    ["<CR>"] = cmp.mapping.confirm({ select = false }), -- no not select first item
+                    ["<CR>"] = cmp.mapping.confirm({ select = false }), -- do not select first item
+                    ['<Down>'] = {
+                        i = cmp.mapping.abort() -- only use TAB to select auto-completion option
+                    },
+                    ['<Up>'] = {
+                        i = cmp.mapping.abort() -- only use TAB to select auto-completion option
+                    },
                     ["<Tab>"] = cmp.mapping(function(fallback)
                         if cmp.visible() then
                             cmp.select_next_item()
@@ -226,7 +232,16 @@ local plugins = {
                 performance = {
                     max_view_entries = 20,
                 },
-                window = { documentation = cmp.config.window.bordered(), completion = cmp.config.window.bordered() },
+                window = {
+                    documentation = {
+                        border = 'rounded',
+                        winhighlight = 'Normal:StatusLine,FloatBorder:StatusLine,CursorLine:Visual,Search:None'
+                    },
+                    completion = {
+                        border = 'rounded',
+                        winhighlight = 'Normal:StatusLine,FloatBorder:StatusLine,CursorLine:Visual,Search:None'
+                    }
+                },
             })
             cmp.setup.cmdline(":", {
                 mapping = cmp.mapping.preset.cmdline(),
@@ -243,17 +258,30 @@ local plugins = {
 require("lazy").setup(plugins, {})
 
 
--- Custom bindings
+
+-------------------------------------------------------------------------------
+-- KEYMAP/BINDINGS CONFIGS
+-------------------------------------------------------------------------------
+
+-- Unbindings
 vim.api.nvim_set_keymap('n', '<C-b>', '<nop>', { noremap = true, silent = true }) -- unbind Ctrl+b
 vim.api.nvim_set_keymap('n', '<C-f>', '<nop>', { noremap = true, silent = true }) -- unbind Ctrl+f
-vim.keymap.set('n', '<C-b>', ':Neotree filesystem reveal left<CR>', {}) -- Ctrl+b to open file tree
-vim.keymap.set('n', '<C-f>', ':Telescope find_files<CR>', {}) -- Ctrl+f to search/find file
-vim.keymap.set('n', '<C-k>', vim.lsp.buf.hover, {}) -- Ctrl+k to show function documentation
 
+-- Bindings
+vim.keymap.set('n', '<C-b>', ':Neotree filesystem toggle left<CR>', {}) -- Ctrl+b to open file tree in side bar
+vim.keymap.set('n', '<C-f>', ':Telescope find_files<CR>', {})           -- Ctrl+f to search/find file
+vim.keymap.set('n', '<C-k>', vim.lsp.buf.hover, {})                     -- Ctrl+k to show hovered function documentation
+
+
+
+-------------------------------------------------------------------------------
+-- VIM CONFIGS
+-------------------------------------------------------------------------------
 
 -- Aesthetics
 vim.cmd ([[
 highlight MatchParen   guibg=none    guifg=#fc9803 gui=bold,underline
+highlight WinSeparator guifg=#111122 guibg=#202030
 highlight Normal       guibg=#111111
 highlight LineNr       guibg=#202020 guifg=#555555
 highlight CursorLineNr guibg=#383838 guifg=#909090 gui=bold,italic
@@ -262,7 +290,6 @@ highlight EndOfBuffer  guibg=#141414 guifg=#662222
 highlight StatusLine   guibg=#202030 guifg=#8888cc gui=bold,italic
 highlight MsgArea      guifg=#ffffff guibg=#111122
 ]])
-
 
 -- Basic settings
 vim.opt.cursorline = true
@@ -277,7 +304,6 @@ vim.opt.smartindent = true
 vim.opt.wrap = true
 vim.opt.linebreak = true
 vim.o.scrolloff = 4
-
 
 -- Custom commands
 vim.cmd ([[

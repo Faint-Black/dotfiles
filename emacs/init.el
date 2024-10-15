@@ -44,21 +44,21 @@
 ;; boiler-plate stuff
 (add-hook 'text-mode-hook 'visual-line-mode)
 
-;; set default buffer
+;; set default buffer (CHANGE THIS FOR YOUR COMPUTER!!)
 (setq initial-buffer-choice "~/Desktop/notes/emacs/home.org")
 
 ;; window size
 (setq initial-frame-alist '((width . 120)    ; Width in characters
-                             (height . 50))) ; Height in lines
+                            (height . 50)))  ; Height in lines
 
 ;; base theme
 (load-theme 'wombat t)
 
-;; custom headers
+;; custom headers and faces
 (custom-set-faces
  '(org-code ((t (:foreground "#faf678"))))
- '(org-level-1 ((t (:foreground "#df8735" :weight bold :height 1.6))))
- '(org-level-2 ((t (:foreground "#ae8eee" :weight bold :height 1.2))))
+ '(org-level-1 ((t (:foreground "#df8735" :weight bold :height 1.4))))
+ '(org-level-2 ((t (:foreground "#9e7ece" :weight bold :height 1.2))))
  '(org-level-3 ((t (:foreground "#67f075" :weight bold :height 1.1))))
  '(org-level-4 ((t (:foreground "#e5c732" :height 1.05))))
  '(org-level-5 ((t (:foreground "#c26736" :height 1.0)))))
@@ -89,7 +89,7 @@
 (add-hook 'org-mode-hook 'org-display-inline-images)
 (setq org-image-actual-width nil)
 
-;; ensure proper org-mode link behaviours
+;; ensure proper org-mode link behaviour
 (setq org-link-frame-setup
       '((file . find-file)           ; Open file links in the current window
         (dired . dired)               ; Open dired links in a dired buffer
@@ -97,7 +97,7 @@
         (gnus . gnus)                 ; Open gnus links in a gnus buffer
         (url . browse-url)))          ; Open URL links in the default web browser
 
-;; bind RETURN to open links in vim mode
+;; bind RETURN to open links in evil mode
 (evil-define-key 'normal 'global
   (kbd "RET") 'org-open-at-point)
 
