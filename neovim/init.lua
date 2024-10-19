@@ -194,18 +194,7 @@ local plugins = {
                     },
                     ["<Tab>"] = cmp.mapping(function(fallback)
                         if cmp.visible() then
-                            cmp.select_next_item()
-                        elseif luasnip.expand_or_jumpable() then
-                            luasnip.expand_or_jump()
-                        else
-                            fallback()
-                        end
-                    end, { "i", "s" }),
-                    ["<S-Tab>"] = cmp.mapping(function(fallback)
-                        if cmp.visible() then
-                            cmp.select_prev_item()
-                        elseif luasnip.jumpable(-1) then
-                            luasnip.jump(-1)
+                            cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
                         else
                             fallback()
                         end
@@ -268,9 +257,29 @@ vim.api.nvim_set_keymap('n', '<C-b>', '<nop>', { noremap = true, silent = true }
 vim.api.nvim_set_keymap('n', '<C-f>', '<nop>', { noremap = true, silent = true }) -- unbind Ctrl+f
 
 -- Bindings
-vim.keymap.set('n', '<C-b>', ':Neotree filesystem toggle left<CR>', {}) -- Ctrl+b to open file tree in side bar
+vim.keymap.set('n', '<C-b>', ':Neotree filesystem reveal left<CR>', {}) -- Ctrl+b to open file tree in side bar
 vim.keymap.set('n', '<C-f>', ':Telescope find_files<CR>', {})           -- Ctrl+f to search/find file
 vim.keymap.set('n', '<C-k>', vim.lsp.buf.hover, {})                     -- Ctrl+k to show hovered function documentation
+
+
+
+-------------------------------------------------------------------------------
+-- CUSTOM FUNCTIONS
+-------------------------------------------------------------------------------
+
+-- When coding, automatically save all buffers when the window focus is lost
+vim.api.nvim_create_autocmd({"FocusLost", "WinLeave"}, {
+    callback = function()
+        local bufnr = vim.api.nvim_get_current_buf()
+        if vim.lsp.buf_is_attached(bufnr) then
+            print("LSP detected, auto-saving...")
+            vim.cmd("wa")
+        else
+            print("no LSP latch detected")
+        end
+    end,
+})
+
 
 
 
