@@ -313,6 +313,7 @@ vim.opt.smartindent = true
 vim.opt.wrap = true
 vim.opt.linebreak = true
 vim.o.scrolloff = 4
+vim.api.nvim_set_option("clipboard", "unnamed")
 
 -- Custom commands
 vim.cmd ([[

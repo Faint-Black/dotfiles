@@ -25,7 +25,11 @@
 (require 'evil-collection)
 (evil-collection-init)
 (custom-set-variables
-    '(package-selected-packages '(evil cmake-mode)))
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages '(evil cmake-mode)))
 
 ;; pretty org-mode custom bullet points
 (use-package org-superstar
@@ -33,7 +37,7 @@
     :hook 
     (org-mode . org-superstar-mode)
     :config
-    (setq org-superstar-headline-bullets-list '("‣" "•" "➤" "-" "'")))
+    (setq org-superstar-headline-bullets-list '("‣" "•" "➤" "-")))
 
 
 
@@ -41,11 +45,23 @@
 ;; EMACS CONFIGURATIONS
 ;;------------------------------------------------------------------------
 
+;; set user-specific path configurations (CHANGE THIS FOR YOUR COMPUTER!!)
+(setq initial-buffer-choice "~/Desktop/notes/emacs/home.org")
+
+;; org agenda configurations
+(global-set-key (kbd "C-c a") 'org-agenda)
+(setq org-agenda-window-setup 'only-window)
+(setq org-agenda-span 1)
+(setq org-agenda-start-day "-3d")
+(setq org-agenda-skip-timestamp-if-done nil)
+(setq org-agenda-skip-deadline-if-done nil)
+(setq org-agenda-skip-scheduled-if-done nil)
+(setq org-agenda-skip-scheduled-if-deadline-is-shown t)
+(setq org-agenda-skip-timestamp-if-deadline-is-shown t)
+(setq org-log-into-drawer t)
+
 ;; boiler-plate stuff
 (add-hook 'text-mode-hook 'visual-line-mode)
-
-;; set default buffer (CHANGE THIS FOR YOUR COMPUTER!!)
-(setq initial-buffer-choice "~/Desktop/notes/emacs/home.org")
 
 ;; window size
 (setq initial-frame-alist '((width . 120)    ; Width in characters
@@ -56,15 +72,17 @@
 
 ;; custom headers and faces
 (custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(org-code ((t (:foreground "#faf678"))))
  '(org-level-1 ((t (:foreground "#df8735" :weight bold :height 1.4))))
  '(org-level-2 ((t (:foreground "#9e7ece" :weight bold :height 1.2))))
- '(org-level-3 ((t (:foreground "#67f075" :weight bold :height 1.1))))
- '(org-level-4 ((t (:foreground "#e5c732" :height 1.05))))
- '(org-level-5 ((t (:foreground "#c26736" :height 1.0)))))
-
-;; automatically hide org-mode faces
-(setq org-hide-emphasis-markers t)
+ '(org-level-3 ((t (:foreground "#47d055" :weight bold :height 1.1))))
+ '(org-level-4 ((t (:foreground "#87f095" :height 1.05))))
+ '(org-level-5 ((t (:foreground "#f0ce87" :height 1.0))))
+ '(org-level-6 ((t (:foreground "#d1db5e" :height 1.0)))))
 
 ;; disable/enable/customize org-mode faces here 
 (setq org-emphasis-alist
@@ -91,15 +109,16 @@
 
 ;; ensure proper org-mode link behaviour
 (setq org-link-frame-setup
-      '((file . find-file)           ; Open file links in the current window
+      '((file . find-file)            ; Open file links in the current window
         (dired . dired)               ; Open dired links in a dired buffer
         (wl . wl)                     ; Open wl (Wanderlust) links in a wl buffer
         (gnus . gnus)                 ; Open gnus links in a gnus buffer
         (url . browse-url)))          ; Open URL links in the default web browser
 
+;; do not prompt confirmation before running code blocks
+(setq org-confirm-babel-evaluate nil)
+
 ;; bind RETURN to open links in evil mode
 (evil-define-key 'normal 'global
   (kbd "RET") 'org-open-at-point)
-
-
 
