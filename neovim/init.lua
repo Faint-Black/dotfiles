@@ -86,9 +86,9 @@ local plugins = {
         config = function()
             local lspconfig = require("lspconfig")
             -- manually add every language server below this point
-            lspconfig.lua_ls.setup({})
-            lspconfig.clangd.setup({})
-            lspconfig.zls.setup({})
+            lspconfig.lua_ls.setup({}) -- lua
+            lspconfig.clangd.setup({}) -- C/C++
+            lspconfig.zls.setup({})    -- zig
         end
     },
     {
@@ -204,7 +204,7 @@ local plugins = {
                     { name = "luasnip", max_item_count = 3 },
                     { name = "nvim_lsp", max_item_count = 5 },
                     { name = "nvim_lua", max_item_count = 5 },
-                    { name = "buffer", max_item_count = 5, keyword_length = 3 },
+                    { name = "buffer", max_item_count = 0, keyword_length = 3 },
                     { name = "nvim_lsp_signature_help", max_item_count = 5 },
                     {
                         name = "spell",
@@ -249,17 +249,19 @@ require("lazy").setup(plugins, {})
 
 
 -------------------------------------------------------------------------------
--- KEYMAP/BINDINGS CONFIGS
+-- USER KEYMAP/BINDINGS CONFIGS
 -------------------------------------------------------------------------------
 
--- Unbindings
-vim.api.nvim_set_keymap('n', '<C-b>', '<nop>', { noremap = true, silent = true }) -- unbind Ctrl+b
-vim.api.nvim_set_keymap('n', '<C-f>', '<nop>', { noremap = true, silent = true }) -- unbind Ctrl+f
+-- Leader, set as spacebar key
+vim.g.mapleader = " "
 
 -- Bindings
-vim.keymap.set('n', '<C-b>', ':Neotree filesystem reveal left<CR>', {}) -- Ctrl+b to open file tree in side bar
-vim.keymap.set('n', '<C-f>', ':Telescope find_files<CR>', {})           -- Ctrl+f to search/find file
-vim.keymap.set('n', '<C-k>', vim.lsp.buf.hover, {})                     -- Ctrl+k to show hovered function documentation
+vim.keymap.set('n', '<leader>t', ':split | terminal<CR>', {})                -- open terminal emulator buffer
+vim.keymap.set('n', '<leader>b', ':Neotree filesystem reveal left<CR>', {})  -- open file tree in side bar
+vim.keymap.set('n', '<leader>f', ':Telescope find_files<CR>', {})            -- search/find file in file tree
+vim.keymap.set('n', '<leader>k', vim.lsp.buf.hover, {})                      -- (lsp) show hovered function documentation
+vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, {})              -- (lsp) show errors/warnings of current line
+vim.keymap.set('n', '<leader>d', vim.lsp.buf.definition, {})                 -- (lsp) open the definition of an identifier
 
 
 

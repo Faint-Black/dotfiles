@@ -63,10 +63,6 @@
 ;; boiler-plate stuff
 (add-hook 'text-mode-hook 'visual-line-mode)
 
-;; window size
-(setq initial-frame-alist '((width . 120)    ; Width in characters
-                            (height . 50)))  ; Height in lines
-
 ;; base theme
 (load-theme 'wombat t)
 
