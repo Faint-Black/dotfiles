@@ -12,19 +12,77 @@
 (require 'use-package)
 (setq use-package-always-ensure t)
 
+;; magit!
+(use-package magit :ensure t)
+
 ;; pretty org-mode custom headline bullet points
 (use-package org-superstar
-    :ensure t
-    :hook 
-    (org-mode . org-superstar-mode)
-    :config
-    (setq org-superstar-headline-bullets-list '("‣" "•" "➤" "-")))
+  :ensure t
+  :hook
+  (org-mode . org-superstar-mode)
+  :custom
+  (org-superstar-headline-bullets-list '("‣" "•" "➤" "-")))
 
 ;; pretty org-mode calendar/agenda
-(use-package calfw
-    :ensure t
-    :config
-    (use-package calfw-org :ensure t))
+(use-package calfw :ensure t)
+(use-package calfw-org
+  :ensure t
+  :requires (calfw)
+  :custom-face
+  (cfw:face-annotation ((t :foreground "RosyBrown" :inherit cfw:face-day-title)))
+  (cfw:face-day-title ((t :background "unspecified")))
+  (cfw:face-default-content ((t :foreground "#bfebbf")))
+  (cfw:face-default-day ((t :weight bold :inherit cfw:face-day-title)))
+  (cfw:face-disable ((t :foreground "DarkGray" :inherit cfw:face-day-title)))
+  (cfw:face-grid ((t :foreground "DarkGrey")))
+  (cfw:face-header ((t (:foreground "#d0bf8f" :weight bold))))
+  (cfw:face-holiday ((t :foreground "#8c5353" :background "unspecified" :weight bold)))
+  (cfw:face-periods ((t :foreground "cyan")))
+  (cfw:face-saturday ((t :foreground "#a4cbff" :background "unspecified" :weight bold)))
+  (cfw:face-select ((t :background "#2f2f2f")))
+  (cfw:face-sunday ((t :foreground "#a4cbff" :background "unspecified" :weight bold)))
+  (cfw:face-title ((t (:foreground "#f0dfaf" :weight bold :height 2.0 :inherit variable-pitch))))
+  (cfw:face-today ((t :background: "#663333" :weight bold)))
+  (cfw:face-today-title ((t :background "#dd3333" :weight bold)))
+  (cfw:face-toolbar ((t :background "unspecified")))
+  (cfw:face-toolbar-button-off ((t :foreground "gray")))
+  (cfw:face-toolbar-button-on ((t :foreground "white" :weight bold :underline t))))
+
+;; Ziglang mode
+(use-package zig-mode :ensure t)
+
+;; Haskell mode
+(use-package haskell-mode :ensure t)
+
+;; Language Service Providers
+(use-package lsp-mode
+  :ensure t
+  :commands lsp
+  :hook
+  (zig-mode . lsp-mode) ;; zls
+  (c-mode . lsp-mode)   ;; clangd
+  (c++-mode . lsp-mode) ;; clangd
+  :custom
+  (lsp-enable-symbol-highlighting t))
+  
+;; Sideline ui for additional LSP information
+(use-package lsp-ui
+  :ensure t
+  :hook
+  (lsp-mode . lsp-ui-mode)
+  :custom
+  (lsp-ui-doc-enable t)
+  (lsp-ui-sideline-enable t))
+
+;; LSP auto-completion and snippets
+(use-package company
+  :ensure t
+  :hook
+  (lsp-mode . company-mode)
+  :custom
+  (company-idle-delay 0.2)
+  (company-minimum-prefix-length 1))
+
 
 
 
@@ -32,50 +90,48 @@
 ;;-----------------------------------------------------------------------+
 ;; USER-SPECIFIC FILEPATHS, DONT FORGET TO CHANGE THIS!!                 |
 ;;-----------------------------------------------------------------------+
+
 (setq initial-buffer-choice "~/Desktop/notes/emacs/home.org")
 (setq org-agenda-files '("~/Desktop/notes/emacs/org-files/Calendar.org"))
 
 
 
 
+
 ;;-----------------------------------------------------------------------+
-;; CUSTOM UNIQUE-ONLY EMACS DEFINITIONS                                  |
+;; ANNOYING AUTO-GENERATED CODE BY CUSTOM, CONTAIN IT HERE!              |
 ;;-----------------------------------------------------------------------+
 
 (custom-set-faces
-    ;; org-mode: calendar framework faces
-    '(cfw:face-title ((t (:foreground "#f0dfaf" :weight bold :height 2.0 :inherit variable-pitch))))
-    '(cfw:face-header ((t (:foreground "#d0bf8f" :weight bold))))
-    '(cfw:face-sunday ((t :foreground "#a4cbff" :background "unspecified" :weight bold)))
-    '(cfw:face-saturday ((t :foreground "#a4cbff" :background "unspecified" :weight bold)))
-    '(cfw:face-holiday ((t :foreground "#8c5353" :background "unspecified" :weight bold)))
-    '(cfw:face-grid ((t :foreground "DarkGrey")))
-    '(cfw:face-default-content ((t :foreground "#bfebbf")))
-    '(cfw:face-periods ((t :foreground "cyan")))
-    '(cfw:face-day-title ((t :background "unspecified")))
-    '(cfw:face-default-day ((t :weight bold :inherit cfw:face-day-title)))
-    '(cfw:face-annotation ((t :foreground "RosyBrown" :inherit cfw:face-day-title)))
-    '(cfw:face-disable ((t :foreground "DarkGray" :inherit cfw:face-day-title)))
-    '(cfw:face-today-title ((t :background "#dd3333" :weight bold)))
-    '(cfw:face-today ((t :background: "#663333" :weight bold)))
-    '(cfw:face-select ((t :background "#2f2f2f")))
-    '(cfw:face-toolbar ((t :background "unspecified")))
-    '(cfw:face-toolbar-button-off ((t :foreground "gray")))
-    '(cfw:face-toolbar-button-on ((t :foreground "white" :weight bold :underline t)))
-    ;; org-mode: faces
-    '(org-code ((t (:foreground "#faf678"))))
-    '(org-level-1 ((t (:foreground "#df8735" :weight bold :height 1.0))))
-    '(org-level-2 ((t (:foreground "#9e7ece" :weight bold :height 1.0))))
-    '(org-level-3 ((t (:foreground "#47d055" :weight bold :height 1.0))))
-    '(org-level-4 ((t (:foreground "#87f095" :weight bold :height 1.0))))
-    '(org-level-5 ((t (:foreground "#f0ce87" :weight bold :height 1.0))))
-    '(org-level-6 ((t (:foreground "#d1db5e" :weight bold :height 1.0)))))
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(org-block ((t (:background "#181818"))))
+ '(org-block-begin-line ((t (:foreground "#505050" :background "#303030"))))
+ '(org-block-end-line ((t (:foreground "#505050" :background "#303030"))))
+ '(org-code ((t (:foreground "#faf678"))))
+ '(org-level-1 ((t (:foreground "#df8735" :weight bold :height 1.0))))
+ '(org-level-2 ((t (:foreground "#9e7ece" :weight bold :height 1.0))))
+ '(org-level-3 ((t (:foreground "#47d055" :weight bold :height 1.0))))
+ '(org-level-4 ((t (:foreground "#87f095" :weight bold :height 1.0))))
+ '(org-level-5 ((t (:foreground "#f0ce87" :weight bold :height 1.0))))
+ '(org-level-6 ((t (:foreground "#d1db5e" :weight bold :height 1.0))))
+ '(org-meta-line ((t (:foreground "#808080" :background "#303030")))))
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages '(zig-mode org-superstar calfw-org calfw)))
+
 
 
 
 
 ;;-----------------------------------------------------------------------+
-;; GENERAL EMACS CONFIGURATIONS                                          |
+;; CORE EMACS CONFIGURATIONS                                             |
 ;;-----------------------------------------------------------------------+
 
 ;; base theme
@@ -86,15 +142,36 @@
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
 
+;; stop automatic generation of junk files
+(setq make-backup-files nil) ;; Disable backup files    (foo.org~)
+(setq auto-save-default nil) ;; Disable auto-save files (#foo.org#)
+(setq create-lockfiles nil)  ;; Disable lock files      (.#foo.org)
+
+
+
+
+
+;;-----------------------------------------------------------------------+
+;; CUSTOM KEYBINDS                                                       |
+;;-----------------------------------------------------------------------+
+
+;; helper function, for no reason at all
+(defun leader-keybind(KEY COMMAND)
+  "Helper function for setting user keybindings"
+  (global-set-key (kbd (concat "C-c " KEY)) COMMAND))
+
+;; open terminal emulator window
+(leader-keybind "t" 'shell)
+;; open org agenda
+(leader-keybind "a" 'cfw:open-org-calendar)
+
+
 
 
 
 ;;-----------------------------------------------------------------------+
 ;; ORG-MODE CONFIGURATIONS                                               |
 ;;-----------------------------------------------------------------------+
-
-;; org agenda configurations
-(global-set-key (kbd "C-c a") 'cfw:open-org-calendar)
 
 ;; boiler-plate stuff (i forgot what this does)
 (add-hook 'text-mode-hook 'visual-line-mode)
@@ -117,6 +194,5 @@
         (gnus . gnus)                 ; Open gnus links in a gnus buffer
         (url . browse-url)))          ; Open URL links in the default web browser
 
-;; do not prompt for confirmation before running org-mode src code blocks
+;; do not prompt for confirmation before running org-mode code blocks
 (setq org-confirm-babel-evaluate nil)
-
