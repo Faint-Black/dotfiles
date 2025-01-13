@@ -68,8 +68,7 @@
   (company-minimum-prefix-length 1)
   :config
   (setq company-backends ;; remove buffer related auto-completion suggestions
-	(remove 'company-dabbrev company-backends)))
-
+        (remove 'company-dabbrev company-backends)))
 
 ;; Pretty org-mode custom headline bullet points
 (use-package org-superstar
@@ -153,15 +152,13 @@
  '(org-block-begin-line ((t (:foreground "#505050" :background "#303030"))))
  '(org-block-end-line ((t (:foreground "#505050" :background "#303030"))))
  '(org-code ((t (:foreground "#faf678"))))
- '(org-imminent-deadline ((t (:foreground "#eeaaaa"))))
  '(org-level-1 ((t (:foreground "#df8735" :weight bold :height 1.0))))
  '(org-level-2 ((t (:foreground "#9e7ece" :weight bold :height 1.0))))
  '(org-level-3 ((t (:foreground "#47d055" :weight bold :height 1.0))))
  '(org-level-4 ((t (:foreground "#87f095" :weight bold :height 1.0))))
  '(org-level-5 ((t (:foreground "#f0ce87" :weight bold :height 1.0))))
  '(org-level-6 ((t (:foreground "#d1db5e" :weight bold :height 1.0))))
- '(org-meta-line ((t (:foreground "#808080" :background "#303030"))))
- '(org-scheduled ((t (:foreground "#aaeeaa")))))
+ '(org-meta-line ((t (:foreground "#808080" :background "#303030")))))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -176,7 +173,7 @@
 ;; CORE EMACS CONFIGURATIONS                                             |
 ;;-----------------------------------------------------------------------+
 
-;; base theme
+;; Base theme
 (load-theme 'wombat t)
 
 ;; GUI application settings
@@ -184,22 +181,28 @@
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
 
-;; tabs to spaces
+;; Tabs to spaces
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
 (setq c-basic-offset 4)
 
-;; except with LaTeX documents...
-(add-hook 'LaTeX-mode-hook (lambda()
-							 (setq indent-tabs-mode t)))
-
-;; stop automatic generation of junk files
+;; Disable automatic generation of junk files
 (setq make-backup-files nil) ;; Disable backup files    (foo.org~)
 (setq auto-save-default nil) ;; Disable auto-save files (#foo.org#)
 (setq create-lockfiles nil)  ;; Disable lock files      (.#foo.org)
 
-;; enable disabled commands
+;; Enable disabled commands
 (setq disabled-command-function nil)
+
+
+
+;;-----------------------------------------------------------------------+
+;; CUSTOM HOOKS                                                          |
+;;-----------------------------------------------------------------------+
+
+;; LaTeX documents still require tabs for indents
+(add-hook 'LaTeX-mode-hook (lambda()
+                             (setq-local indent-tabs-mode t)))
 
 
 
