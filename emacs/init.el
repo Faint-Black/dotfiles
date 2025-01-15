@@ -1,4 +1,13 @@
 ;;-----------------------------------------------------------------------+
+;; USER-SPECIFIC FILEPATHS, DONT FORGET TO CHANGE THIS!!                 |
+;;-----------------------------------------------------------------------+
+
+(setq initial-buffer-choice "~/Desktop/notes/emacs/home.org")
+(setq org-agenda-files '("~/Desktop/notes/emacs/org-files/Calendar.org"))
+
+
+
+;;-----------------------------------------------------------------------+
 ;; PACKAGE CONFIGURATIONS                                                |
 ;;-----------------------------------------------------------------------+
 
@@ -21,7 +30,8 @@
 ;; Dired file icons
 (use-package nerd-icons-dired
   :ensure t
-  :hook (dired-mode . nerd-icons-dired-mode))
+  :hook
+  (dired-mode . nerd-icons-dired-mode))
 
 ;; Ziglang mode
 (use-package zig-mode
@@ -107,8 +117,20 @@
 (use-package auctex
   :ensure t
   :hook
-  (LaTeX-mode . flyspell-mode))
-
+  (LaTeX-mode . flyspell-mode)
+  (LaTeX-mode . TeX-source-correlate-mode)
+  :config
+  (setq TeX-electric-sub-and-superscript nil)
+  ;; i hate synctex so fucking much...
+  (setq TeX-source-correlate-mode t)
+  (setq TeX-source-correlate-start-server t)
+  :custom-face
+  (font-latex-sectioning-1-face ((t :foreground "#40d080" :weight bold :height 1.5 :inherit nil)))
+  (font-latex-sectioning-2-face ((t :foreground "#64d860" :weight bold :height 1.4 :inherit nil)))
+  (font-latex-sectioning-3-face ((t :foreground "#88e040" :weight bold :height 1.3 :inherit nil)))
+  (font-latex-sectioning-4-face ((t :foreground "#ace820" :weight bold :height 1.2 :inherit nil)))
+  (font-latex-sectioning-5-face ((t :foreground "#d0f000" :weight bold :height 1.1 :inherit nil))))
+  
 ;; LaTeX auto-completion
 (use-package company-auctex
   :ensure t
@@ -116,26 +138,130 @@
   :config
   (company-auctex-init))
 
-;; Pdf tools for viewing LaTeX documents
+;; PDF tools for viewing documents
 (use-package pdf-tools
   :ensure t
   :config
-  (pdf-tools-install))
+  (pdf-tools-install)
+  :custom
+  (pdf-view-continuous nil))
 
 ;; Live pdf preview pane
+;; (not the actual reader, just a pkg that automates the pdf buffer)
 (use-package latex-preview-pane
   :ensure t
   :hook
   (LaTeX-mode . latex-preview-pane-mode))
 
+;; Make auctex and latexmk work with eachother, necessary for synctex
+(use-package auctex-latexmk
+  :ensure t
+  :config
+  (auctex-latexmk-setup))
+
 
 
 ;;-----------------------------------------------------------------------+
-;; USER-SPECIFIC FILEPATHS, DONT FORGET TO CHANGE THIS!!                 |
+;; CORE EMACS CONFIGURATIONS                                             |
 ;;-----------------------------------------------------------------------+
 
-(setq initial-buffer-choice "~/Desktop/notes/emacs/home.org")
-(setq org-agenda-files '("~/Desktop/notes/emacs/org-files/Calendar.org"))
+;; Base theme
+(load-theme 'wombat t)
+
+;; GUI application settings
+(menu-bar-mode -1)
+(scroll-bar-mode -1)
+(tool-bar-mode -1)
+
+;; Tabs to spaces and indentation settings
+(setq-default indent-tabs-mode nil)
+(setq-default tab-width 4)
+(setq c-basic-offset 4)
+
+;; Disable automatic generation of junk files
+(setq make-backup-files nil) ;; Disable backup files    (foo.org~)
+(setq auto-save-default nil) ;; Disable auto-save files (#foo.org#)
+(setq create-lockfiles nil)  ;; Disable lock files      (.#foo.org)
+
+;; Enable disabled commands
+(setq disabled-command-function nil)
+
+;; Compilation mode settings
+(setq compilation-ask-about-save nil) ;; auto-save when compiling
+(setq compilation-auto-jump-to-first-error t) ;; jump to first error
+
+
+
+;;-----------------------------------------------------------------------+
+;; CUSTOM HOOKS                                                          |
+;;-----------------------------------------------------------------------+
+
+;; LaTeX documents still require tabs for indents
+(add-hook 'LaTeX-mode-hook (lambda()
+                             (setq-local indent-tabs-mode t)))
+
+;; Enable word wrapping
+(add-hook 'text-mode-hook 'visual-line-mode)
+
+;; Enable org-mode inlined images
+(add-hook 'org-mode-hook 'org-display-inline-images)
+
+;; Refresh document buffer after LaTeX compilation
+(add-hook 'TeX-after-compilation-finished-functions #'TeX-revert-document-buffer)
+
+
+
+;;-----------------------------------------------------------------------+
+;; CUSTOM KEYBINDS                                                       |
+;;-----------------------------------------------------------------------+
+
+;; Helper function, for no reason whatsoever
+(defun leader-keybind(KEY COMMAND)
+  "Helper function for setting user keybindings"
+  (global-set-key (kbd (concat "C-c " KEY)) COMMAND))
+
+;; Open terminal emulator window
+(leader-keybind "t" 'shell)
+;; Open compilation mode
+(leader-keybind "c" 'compile)
+;; Open org agenda calendar
+(leader-keybind "a c" 'cfw:open-org-calendar)
+;; Open org agenda TODO entries
+(leader-keybind "a t" 'org-todo-list)
+;; (LSP) open hovered identifier definition
+(leader-keybind "d" 'lsp-goto-type-definition)
+;; (LSP) show buffer diagnostics
+(leader-keybind "e" 'flymake-show-buffer-diagnostics)
+
+
+
+;;-----------------------------------------------------------------------+
+;; ORG-MODE CONFIGURATIONS                                               |
+;;-----------------------------------------------------------------------+
+
+;; Text is indented according to it's header depth
+(setq org-startup-indented t)
+
+;; Start headers as unfolded by default
+(setq org-startup-folded 'showall)
+
+;; Attempt to find image width in previous "ATTR"
+(setq org-image-actual-width nil)
+
+;; Ensure proper org-mode link behaviour
+(setq org-link-frame-setup
+      '((file . find-file)   ;; Open file links in the current window
+        (dired . dired)      ;; Open dired links in a dired buffer
+        (wl . wl)            ;; Open wl (Wanderlust) links in a wl buffer
+        (gnus . gnus)        ;; Open gnus links in a gnus buffer
+        (url . browse-url))) ;; Open URL links in the default web browser
+
+;; Do not prompt for confirmation before running org-mode code blocks
+(setq org-confirm-babel-evaluate nil)
+
+;; Org agenda configurations
+(setq org-agenda-span 100)
+(setq org-agenda-format-date "%d %B %Y")
 
 
 
@@ -166,96 +292,3 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages '(zig-mode org-superstar calfw-org calfw)))
-
-
-
-;;-----------------------------------------------------------------------+
-;; CORE EMACS CONFIGURATIONS                                             |
-;;-----------------------------------------------------------------------+
-
-;; Base theme
-(load-theme 'wombat t)
-
-;; GUI application settings
-(menu-bar-mode -1)
-(scroll-bar-mode -1)
-(tool-bar-mode -1)
-
-;; Tabs to spaces
-(setq-default indent-tabs-mode nil)
-(setq-default tab-width 4)
-(setq c-basic-offset 4)
-
-;; Disable automatic generation of junk files
-(setq make-backup-files nil) ;; Disable backup files    (foo.org~)
-(setq auto-save-default nil) ;; Disable auto-save files (#foo.org#)
-(setq create-lockfiles nil)  ;; Disable lock files      (.#foo.org)
-
-;; Enable disabled commands
-(setq disabled-command-function nil)
-
-
-
-;;-----------------------------------------------------------------------+
-;; CUSTOM HOOKS                                                          |
-;;-----------------------------------------------------------------------+
-
-;; LaTeX documents still require tabs for indents
-(add-hook 'LaTeX-mode-hook (lambda()
-                             (setq-local indent-tabs-mode t)))
-
-
-
-;;-----------------------------------------------------------------------+
-;; CUSTOM KEYBINDS                                                       |
-;;-----------------------------------------------------------------------+
-
-;; Helper function, for no reason at all
-(defun leader-keybind(KEY COMMAND)
-  "Helper function for setting user keybindings"
-  (global-set-key (kbd (concat "C-c " KEY)) COMMAND))
-
-;; Open terminal emulator window
-(leader-keybind "t" 'shell)
-;; Open org agenda calendar
-(leader-keybind "a c" 'cfw:open-org-calendar)
-;; Open org agenda TODO entries
-(leader-keybind "a t" 'org-todo-list)
-;; (LSP) open hovered identifier definition
-(leader-keybind "d" 'lsp-goto-type-definition)
-;; (LSP) show buffer diagnostics
-(leader-keybind "e" 'flymake-show-buffer-diagnostics)
-
-
-
-;;-----------------------------------------------------------------------+
-;; ORG-MODE CONFIGURATIONS                                               |
-;;-----------------------------------------------------------------------+
-
-;; Enable word wrap
-(add-hook 'text-mode-hook 'visual-line-mode)
-
-;; Text is indented according to it's header depth
-(setq org-startup-indented t)
-
-;; Start headers as unfolded by default
-(setq org-startup-folded 'showall)
-
-;; Inline image configurations
-(add-hook 'org-mode-hook 'org-display-inline-images)
-(setq org-image-actual-width nil)
-
-;; Ensure proper org-mode link behaviour
-(setq org-link-frame-setup
-      '((file . find-file)   ;; Open file links in the current window
-        (dired . dired)      ;; Open dired links in a dired buffer
-        (wl . wl)            ;; Open wl (Wanderlust) links in a wl buffer
-        (gnus . gnus)        ;; Open gnus links in a gnus buffer
-        (url . browse-url))) ;; Open URL links in the default web browser
-
-;; Do not prompt for confirmation before running org-mode code blocks
-(setq org-confirm-babel-evaluate nil)
-
-;; Org agenda configurations
-(setq org-agenda-span 100)
-(setq org-agenda-format-date "%d %B %Y")
