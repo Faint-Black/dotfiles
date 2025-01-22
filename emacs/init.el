@@ -80,13 +80,18 @@
   (setq company-backends ;; remove buffer related auto-completion suggestions
         (remove 'company-dabbrev company-backends)))
 
+(use-package yasnippet
+  :ensure t
+  :hook
+  (prog-mode . yas-global-mode))
+
 ;; Pretty org-mode custom headline bullet points
 (use-package org-superstar
   :ensure t
   :hook
   (org-mode . org-superstar-mode)
   :custom
-  (org-superstar-headline-bullets-list '("‣" "•" "➤" "-")))
+  (org-superstar-headline-bullets-list '("‣" "⦿" "➤" "•" "◦")))
 
 ;; Pretty org-mode calendar/agenda
 (use-package calfw :ensure t)
@@ -121,7 +126,10 @@
   (LaTeX-mode . TeX-source-correlate-mode)
   :config
   (setq TeX-electric-sub-and-superscript nil)
-  ;; i hate synctex so fucking much...
+  (setq TeX-brace-indent-level 4)
+  (setq LaTeX-indent-level 4)
+  (setq tex-fontify-script nil)
+  (setq font-latex-fontify-script nil)
   (setq TeX-source-correlate-mode t)
   (setq TeX-source-correlate-start-server t)
   :custom-face
@@ -147,7 +155,7 @@
   (pdf-view-continuous nil))
 
 ;; Live pdf preview pane
-;; (not the actual reader, just a pkg that automates the pdf buffer)
+;; (not the actual reader, just a pkg that automates the pdf viewing process)
 (use-package latex-preview-pane
   :ensure t
   :hook
@@ -190,6 +198,9 @@
 (setq compilation-ask-about-save nil) ;; auto-save when compiling
 (setq compilation-auto-jump-to-first-error t) ;; jump to first error
 
+;; Grep mode setting
+(setq grep-command "grep -nHrZ --color=auto ")
+
 
 
 ;;-----------------------------------------------------------------------+
@@ -205,9 +216,6 @@
 
 ;; Enable org-mode inlined images
 (add-hook 'org-mode-hook 'org-display-inline-images)
-
-;; Refresh document buffer after LaTeX compilation
-(add-hook 'TeX-after-compilation-finished-functions #'TeX-revert-document-buffer)
 
 
 
@@ -228,9 +236,9 @@
 (leader-keybind "a c" 'cfw:open-org-calendar)
 ;; Open org agenda TODO entries
 (leader-keybind "a t" 'org-todo-list)
-;; (LSP) open hovered identifier definition
+;; (LSP) open definition of hovered identifier
 (leader-keybind "d" 'lsp-goto-type-definition)
-;; (LSP) show buffer diagnostics
+;; (LSP) show buffer errors with diagnostics
 (leader-keybind "e" 'flymake-show-buffer-diagnostics)
 
 
