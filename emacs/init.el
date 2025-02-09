@@ -57,8 +57,8 @@
   (c++-mode . lsp-mode) ;; clangd
   :custom
   (lsp-enable-symbol-highlighting t))
-  
-;; Sideline ui for additional LSP information
+
+;; LSP graphic information
 (use-package lsp-ui
   :ensure t
   :hook
@@ -80,10 +80,11 @@
   (setq company-backends ;; remove buffer related auto-completion suggestions
         (remove 'company-dabbrev company-backends)))
 
+;; LSP snippets
 (use-package yasnippet
   :ensure t
   :hook
-  (prog-mode . yas-global-mode))
+  (prog-mode . yas-minor-mode))
 
 ;; Pretty org-mode custom headline bullet points
 (use-package org-superstar
@@ -138,7 +139,7 @@
   (font-latex-sectioning-3-face ((t :foreground "#88e040" :weight bold :height 1.3 :inherit nil)))
   (font-latex-sectioning-4-face ((t :foreground "#ace820" :weight bold :height 1.2 :inherit nil)))
   (font-latex-sectioning-5-face ((t :foreground "#d0f000" :weight bold :height 1.1 :inherit nil))))
-  
+
 ;; LaTeX auto-completion
 (use-package company-auctex
   :ensure t
@@ -185,6 +186,9 @@
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
 (setq c-basic-offset 4)
+
+;; Highlight trailing whitespaces
+(setq-default show-trailing-whitespace t)
 
 ;; Disable automatic generation of junk files
 (setq make-backup-files nil) ;; Disable backup files    (foo.org~)
