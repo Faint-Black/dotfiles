@@ -1,14 +1,21 @@
-#custom PATHs
-export PATH="$HOME/.config/emacs/bin:$PATH"
-
-#custom aliases
-
-#custom terminal functions
+# custom terminal commands
 cdfzf() {
   local selected_dir
   selected_dir=$(find ${1:-.} -path '*/\.*' -prune -o -type d -print 2> /dev/null | fzf +m) && \
   cd "$selected_dir"
 }
 
-#custom commands to execute after terminal boots up
-cat ~/path/to/terminalWelcomeMessage.txt
+useful-commands() {
+  bold=$(tput bold)
+  reset=$(tput sgr0)
+  echo "${bold}full recursive page style wget scrape${reset}:"
+  echo " wget -m -p -E -k -K -np https://foo.bar/"
+  echo "${bold}symbolic link creation syntax${reset}:"
+  echo " ln -s path/to/binary ./linkname"
+}
+
+# custom PATH bindings
+export PATH="$HOME/.local/bin:$PATH"
+
+# custom commands to immediately execute after terminal boots up
+cat /path/to/terminal_welcome_message.txt

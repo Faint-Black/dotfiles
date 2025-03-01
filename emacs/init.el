@@ -185,7 +185,8 @@
 ;; Tabs to spaces and indentation settings
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
-(setq c-basic-offset 4)
+(setq-default c-basic-offset 4)
+(setq-default sh-indentation 2)
 
 ;; Highlight trailing whitespaces
 (setq-default show-trailing-whitespace t)
