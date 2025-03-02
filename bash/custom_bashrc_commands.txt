@@ -39,8 +39,8 @@ ffmpeg-compress-video() {
 }
 
 useful-commands() {
-  bold=$(tput bold)
-  reset=$(tput sgr0)
+  local bold=$(tput bold)
+  local reset=$(tput sgr0)
   echo "${bold}full recursive page style wget scrape${reset}:"
   echo " wget -m -p -E -k -K -np https://foo.bar/"
   echo "${bold}symbolic link creation syntax${reset}:"
