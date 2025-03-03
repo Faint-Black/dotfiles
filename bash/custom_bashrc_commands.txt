@@ -45,6 +45,8 @@ useful-commands() {
   echo " wget -m -p -E -k -K -np https://foo.bar/"
   echo "${bold}symbolic link creation syntax${reset}:"
   echo " ln -s path/to/binary ./linkname"
+  echo "${bold}quick local HTTP server${reset}:"
+  echo " python3 -m http.server 8080 -d ./server/files/"
 }
 
 # custom PATH bindings
