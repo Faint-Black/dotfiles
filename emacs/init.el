@@ -92,7 +92,7 @@
   :hook
   (org-mode . org-superstar-mode)
   :custom
-  (org-superstar-headline-bullets-list '("‣" "⦿" "➤" "•" "◦")))
+  (org-superstar-headline-bullets-list '("‣" "⊙" "➤" "•" "◦" "⊛")))
 
 ;; Pretty org-mode calendar/agenda
 (use-package calfw :ensure t)
