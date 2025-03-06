@@ -203,6 +203,10 @@
 (setq compilation-ask-about-save nil) ;; auto-save when compiling
 (setq compilation-auto-jump-to-first-error t) ;; jump to first error
 
+;; Elisp evaluation settings
+(setq eval-expression-print-length nil) ;; remove eval print length limit
+(setq eval-expression-print-level nil) ;; remove eval print level limit
+
 ;; Grep mode setting
 (setq grep-command "grep -nHrZ --color=auto ")
 

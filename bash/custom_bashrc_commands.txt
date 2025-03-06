@@ -47,6 +47,14 @@ useful-commands() {
   echo " ln -s path/to/binary ./linkname"
   echo "${bold}quick local HTTP server${reset}:"
   echo " python3 -m http.server 8080 -d ./server/files/"
+  echo "${bold}tar flags${reset}:"
+  echo " -${bold}t${reset} list contents"
+  echo " -${bold}x${reset} extract mode"
+  echo " -${bold}c${reset} compress mode"
+  echo " -${bold}z${reset} gzip compression"
+  echo " -${bold}J${reset} xz compression"
+  echo " -${bold}v${reset} verbose"
+  echo " -${bold}f${reset} archive filename"
 }
 
 # custom PATH bindings
