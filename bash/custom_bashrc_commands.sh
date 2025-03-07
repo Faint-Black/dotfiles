@@ -1,4 +1,9 @@
-# custom terminal commands
+# ---------------------------------------- #
+# append this to your .bashrc config file. #
+# ---------------------------------------- #
+
+# Custom terminal commands
+# ----------------------------------------
 cdfzf() {
   local selected_dir
   selected_dir=$(find ${1:-.} -path '*/\.*' -prune -o -type d -print 2> /dev/null | fzf +m) && \
@@ -11,7 +16,7 @@ ffmpeg-compress-video() {
     return 1
   fi
 
-  ffmpeg -i $1 -vf "scale=-1:720" -c:v libx264 -preset veryslow -r 24 -crf 27 -c:a aac -b:a 128k compressed.mp4
+  ffmpeg -i $1 -vf "scale='if(gt(iw,ih),720,-1)':'if(gt(ih,iw),720,-1)', pad='ceil(iw/2)*2:ceil(ih/2)*2:(ow-iw)/2:(oh-ih)/2'" -c:v libx264 -preset veryslow -r 24 -crf 27 -c:a aac -b:a 128k compressed.mp4
 
   local green=$(tput setaf 2)
   local bold=$(tput bold)
@@ -57,8 +62,10 @@ useful-commands() {
   echo " -${bold}f${reset} archive filename"
 }
 
-# custom PATH bindings
+# Custom PATH bindings
+# ----------------------------------------
 export PATH="$HOME/.local/bin:$PATH"
 
-# custom commands to immediately execute after terminal boots up
-cat /path/to/terminal_welcome_message.txt
+# Custom commands to execute after terminal boots up
+# ----------------------------------------
+cat ~/terminal_welcome_message.txt
