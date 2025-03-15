@@ -47,6 +47,14 @@
   (haskell-indentation-where-post-offset 4)
   (haskell-indentation-where-pre-offset 4))
 
+;; Lisp mode
+(use-package slime
+  :ensure t
+  :init
+  (setq inferior-lisp-program "sbcl")
+  :config
+  (setq slime-contribs '(slime-fancy)))
+
 ;; Language Service Providers
 (use-package lsp-mode
   :ensure t
@@ -168,6 +176,13 @@
   :config
   (auctex-latexmk-setup))
 
+;; Fun zone
+(use-package nyan-mode
+  :ensure t)
+(use-package fireplace
+  :ensure t)
+(use-package zone-sl
+  :ensure t)
 
 
 ;;-----------------------------------------------------------------------+
@@ -275,6 +290,9 @@
 
 ;; Do not prompt for confirmation before running org-mode code blocks
 (setq org-confirm-babel-evaluate nil)
+
+;; Prevent buggy org-mode src block automatic indentation
+(setq org-edit-src-content-indentation 0)
 
 ;; Org agenda configurations
 (setq org-agenda-span 100)
