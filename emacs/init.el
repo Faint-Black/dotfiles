@@ -176,6 +176,15 @@
   :config
   (auctex-latexmk-setup))
 
+;; Move selected region up or down
+(use-package drag-stuff
+  :ensure t
+  :config
+  (drag-stuff-global-mode 1)
+  :bind
+  ("M-p" . drag-stuff-up)
+  ("M-n" . drag-stuff-down))
+
 ;; Fun zone
 (use-package nyan-mode
   :ensure t)
@@ -183,6 +192,7 @@
   :ensure t)
 (use-package zone-sl
   :ensure t)
+
 
 
 ;;-----------------------------------------------------------------------+
@@ -230,6 +240,10 @@
 ;;-----------------------------------------------------------------------+
 ;; CUSTOM HOOKS                                                          |
 ;;-----------------------------------------------------------------------+
+
+;; On init
+(add-hook 'emacs-startup-hook (lambda()
+                                (org-agenda-list)))
 
 ;; LaTeX documents still require tabs for indents
 (add-hook 'LaTeX-mode-hook (lambda()
@@ -295,7 +309,7 @@
 (setq org-edit-src-content-indentation 0)
 
 ;; Org agenda configurations
-(setq org-agenda-span 100)
+(setq org-agenda-span 30)
 (setq org-agenda-format-date "%d %B %Y")
 
 
