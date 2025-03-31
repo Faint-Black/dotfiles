@@ -27,6 +27,10 @@
 (use-package magit
   :ensure t)
 
+;; Better terminal emulator
+(use-package vterm
+  :ensure t)
+
 ;; Dired file icons
 (use-package nerd-icons-dired
   :ensure t
@@ -282,7 +286,7 @@
   (global-set-key (kbd (concat "C-c " KEY)) COMMAND))
 
 ;; Open terminal emulator window
-(leader-keybind "t" 'shell)
+(leader-keybind "t" 'vterm)
 ;; Open compilation mode
 (leader-keybind "c" 'compile)
 ;; Open org agenda calendar
