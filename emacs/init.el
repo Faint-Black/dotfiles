@@ -137,6 +137,9 @@
   (setq TeX-electric-sub-and-superscript nil)
   (setq TeX-brace-indent-level 4)
   (setq LaTeX-indent-level 4)
+  (setq LaTeX-item-indent 0)
+  (setq tex-indent-basic 4)
+  (setq tex-indent-item 4)
   (setq tex-fontify-script nil)
   (setq font-latex-fontify-script nil)
   (setq TeX-source-correlate-mode t)
@@ -207,33 +210,38 @@
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
 
+;; Mode line settings
+(setq-default mode-line-compact t)
+(setq-default mode-line-format (delq 'mode-line-position mode-line-format))
+(display-time)
+
 ;; Tabs to spaces and indentation settings
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
 (setq-default c-basic-offset 4)
 (setq-default sh-indentation 2)
 
-;; Highlight trailing whitespaces
-(setq-default show-trailing-whitespace t)
+;; Reserve highlighted trailing whitespaces for prog-mode buffers
+(setq show-trailing-whitespace nil)
 
 ;; Disable automatic generation of junk files
-(setq make-backup-files nil) ;; Disable backup files    (foo.org~)
-(setq auto-save-default nil) ;; Disable auto-save files (#foo.org#)
-(setq create-lockfiles nil)  ;; Disable lock files      (.#foo.org)
+(setq-default make-backup-files nil) ;; Disable backup files    (foo.org~)
+(setq-default auto-save-default nil) ;; Disable auto-save files (#foo.org#)
+(setq-default create-lockfiles nil)  ;; Disable lock files      (.#foo.org)
 
 ;; Enable disabled commands
-(setq disabled-command-function nil)
+(setq-default disabled-command-function nil)
 
 ;; Compilation mode settings
-(setq compilation-ask-about-save nil) ;; auto-save when compiling
-(setq compilation-auto-jump-to-first-error t) ;; jump to first error
+(setq-default compilation-ask-about-save nil) ;; auto-save when compiling
+(setq-default compilation-auto-jump-to-first-error t) ;; jump to first error
 
 ;; Elisp evaluation settings
-(setq eval-expression-print-length nil) ;; remove eval print length limit
-(setq eval-expression-print-level nil) ;; remove eval print level limit
+(setq-default eval-expression-print-length nil) ;; remove eval print length limit
+(setq-default eval-expression-print-level nil) ;; remove eval print level limit
 
 ;; Grep mode setting
-(setq grep-command "grep -nHrZ --color=auto ")
+(setq-default grep-command "grep -nHrZ --color=auto ")
 
 
 
@@ -242,12 +250,19 @@
 ;;-----------------------------------------------------------------------+
 
 ;; On init
-(add-hook 'emacs-startup-hook (lambda()
-                                (org-agenda-list)))
+(add-hook 'emacs-startup-hook
+          (lambda()
+            (org-agenda-list)))
 
-;; LaTeX documents still require tabs for indents
-(add-hook 'LaTeX-mode-hook (lambda()
-                             (setq-local indent-tabs-mode t)))
+;; On programming buffers
+(add-hook 'prog-mode-hook
+          (lambda()
+            (setq-local show-trailing-whitespace t)))
+
+;; On LaTeX buffers
+(add-hook 'LaTeX-mode-hook
+          (lambda()
+            (setq-local indent-tabs-mode t)))
 
 ;; Enable word wrapping
 (add-hook 'text-mode-hook 'visual-line-mode)
