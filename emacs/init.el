@@ -187,10 +187,7 @@
 (use-package drag-stuff
   :ensure t
   :config
-  (drag-stuff-global-mode 1)
-  :bind
-  ("M-p" . drag-stuff-up)
-  ("M-n" . drag-stuff-down))
+  (drag-stuff-global-mode 1))
 
 ;; Fun zone
 (use-package nyan-mode
@@ -280,10 +277,14 @@
 ;; CUSTOM KEYBINDS                                                       |
 ;;-----------------------------------------------------------------------+
 
-;; Helper function, for no reason whatsoever
+;; Helper functions, for no reason whatsoever
 (defun leader-keybind(KEY COMMAND)
-  "Helper function for setting user keybindings"
+  "Binds <C-c KEY> to COMMAND"
   (global-set-key (kbd (concat "C-c " KEY)) COMMAND))
+
+(defun meta-keybind(KEY COMMAND)
+  "Binds <M-KEY> to COMMAND"
+  (global-set-key (kbd (concat "M-" KEY)) COMMAND))
 
 ;; Open terminal emulator window
 (leader-keybind "t" 'vterm)
@@ -297,6 +298,11 @@
 (leader-keybind "d" 'lsp-goto-type-definition)
 ;; (LSP) show buffer errors with diagnostics
 (leader-keybind "e" 'flymake-show-buffer-diagnostics)
+
+;; Drag selection up
+(meta-keybind "p" 'drag-stuff-up)
+;; Drag selection down
+(meta-keybind "n" 'drag-stuff-down)
 
 
 

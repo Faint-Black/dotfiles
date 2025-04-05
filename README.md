@@ -1,2 +1,2 @@
 # dotfiles
-Backup of all my most important configurations
+Mirror of my personal configuration files, mainly emphasizing my Emacs init.el
