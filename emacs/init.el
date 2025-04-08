@@ -189,6 +189,12 @@
   :config
   (drag-stuff-global-mode 1))
 
+;; ANSI terminal colors for compilation mode buffers
+(use-package ansi-color
+  :ensure t
+  :hook
+  (compilation-filter . ansi-color-compilation-filter))
+
 ;; Fun zone
 (use-package nyan-mode
   :ensure t)
