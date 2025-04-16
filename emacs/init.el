@@ -219,7 +219,6 @@
 
 ;; Mode line settings
 (setq-default mode-line-compact t)
-(setq-default mode-line-format (delq 'mode-line-position mode-line-format))
 (display-time)
 
 ;; Tabs to spaces and indentation settings
