@@ -37,6 +37,12 @@
   :hook
   (dired-mode . nerd-icons-dired-mode))
 
+;; Matching parentheses coloring
+(use-package rainbow-delimiters
+  :ensure t
+  :hook
+  (prog-mode . rainbow-delimiters-mode))
+
 ;; Ziglang mode
 (use-package zig-mode
   :ensure t)
@@ -58,6 +64,13 @@
   (setq inferior-lisp-program "sbcl")
   :config
   (setq slime-contribs '(slime-fancy)))
+
+;; Lisp mode auto-completion
+(use-package slime-company
+  :ensure t
+  :after (slime company)
+  :config
+  (setq company-backends '(company-slime)))
 
 ;; Language Service Providers
 (use-package lsp-mode
@@ -82,7 +95,10 @@
 ;; LSP auto-completion and snippets
 (use-package company
   :ensure t
+  :init
+  (global-company-mode)
   :hook
+  (lisp-mode . company-mode)
   (lsp-mode . company-mode)
   (LaTeX-mode . company-mode)
   :custom
