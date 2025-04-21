@@ -2,8 +2,13 @@
 ;; USER-SPECIFIC FILEPATHS, DONT FORGET TO CHANGE THIS!!                 |
 ;;-----------------------------------------------------------------------+
 
-(setq initial-buffer-choice "~/Desktop/notes/emacs/home.org")
-(setq org-agenda-files '("~/Desktop/notes/emacs/org-files/Calendar.org"))
+(defconst home-file "~/Desktop/notes/emacs/home.org")
+(defconst agenda-file "~/Desktop/notes/emacs/org-files/Calendar.org")
+
+(if (file-exists-p home-file)
+    (setq initial-buffer-choice home-file))
+(if (file-exists-p agenda-file)
+    (setq org-agenda-files (list agenda-file)))
 
 
 
@@ -274,7 +279,7 @@
 ;; On init
 (add-hook 'emacs-startup-hook
           (lambda()
-            (org-agenda-list)))
+            (if (file-exists-p agenda-file) (org-agenda-list))))
 
 ;; On programming buffers
 (add-hook 'prog-mode-hook
@@ -286,11 +291,15 @@
           (lambda()
             (setq-local indent-tabs-mode t)))
 
-;; Enable word wrapping
-(add-hook 'text-mode-hook 'visual-line-mode)
+;; On text-editing buffers
+(add-hook 'text-mode-hook
+          (lambda()
+            (visual-line-mode)))
 
-;; Enable org-mode inlined images
-(add-hook 'org-mode-hook 'org-display-inline-images)
+;; On org-mode buffers
+(add-hook 'org-mode-hook
+          (lambda()
+            (org-display-inline-images)))
 
 
 
