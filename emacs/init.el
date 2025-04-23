@@ -77,6 +77,13 @@
   :config
   (setq company-backends '(company-slime)))
 
+;; Automatic clang-format for C/C++ buffers
+(use-package clang-format
+  :ensure t
+  :hook
+  (c-mode . clang-format-on-save-mode)
+  (c++-mode . clang-format-on-save-mode))
+
 ;; Language Service Providers
 (use-package lsp-mode
   :ensure t
