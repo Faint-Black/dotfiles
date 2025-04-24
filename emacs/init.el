@@ -46,7 +46,17 @@
 (use-package rainbow-delimiters
   :ensure t
   :hook
-  (prog-mode . rainbow-delimiters-mode))
+  (prog-mode . rainbow-delimiters-mode)
+  :custom-face
+  (rainbow-delimiters-depth-1-face ((t :foreground "#FFFFFF" :weight bold)))
+  (rainbow-delimiters-depth-2-face ((t :foreground "#7FFFFF")))
+  (rainbow-delimiters-depth-3-face ((t :foreground "#FF7FFF")))
+  (rainbow-delimiters-depth-4-face ((t :foreground "#FFFF00")))
+  (rainbow-delimiters-depth-5-face ((t :foreground "#7F7FFF")))
+  (rainbow-delimiters-depth-6-face ((t :foreground "#FF7F7F")))
+  (rainbow-delimiters-depth-7-face ((t :foreground "#7FFF7F")))
+  (rainbow-delimiters-depth-8-face ((t :foreground "#7F7F7F")))
+  (rainbow-delimiters-depth-9-face ((t :foreground "#FF00FF"))))
 
 ;; Ziglang mode
 (use-package zig-mode
