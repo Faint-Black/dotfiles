@@ -46,7 +46,8 @@
 (use-package rainbow-delimiters
   :ensure t
   :hook
-  (prog-mode . rainbow-delimiters-mode)
+  (lisp-mode . rainbow-delimiters-mode)
+  (emacs-lisp-mode . rainbow-delimiters-mode)
   :custom-face
   (rainbow-delimiters-depth-1-face ((t :foreground "#FFFFFF" :weight bold)))
   (rainbow-delimiters-depth-2-face ((t :foreground "#7FFFFF")))
@@ -211,9 +212,7 @@
 ;; Live pdf preview pane
 ;; (not the actual reader, just a pkg that automates the pdf viewing process)
 (use-package latex-preview-pane
-  :ensure t
-  :hook
-  (LaTeX-mode . latex-preview-pane-mode))
+  :ensure t)
 
 ;; Make auctex and latexmk work with eachother, necessary for synctex
 (use-package auctex-latexmk
@@ -306,7 +305,8 @@
 ;; On LaTeX buffers
 (add-hook 'LaTeX-mode-hook
           (lambda()
-            (setq-local indent-tabs-mode t)))
+            (setq-local indent-tabs-mode t)
+            (if (y-or-n-p "Activate LaTeX preview pane on this buffer?") (latex-preview-pane-mode))))
 
 ;; On text-editing buffers
 (add-hook 'text-mode-hook
