@@ -73,6 +73,16 @@
   (haskell-indentation-where-post-offset 4)
   (haskell-indentation-where-pre-offset 4))
 
+;; Clojure mode
+(use-package clojure-mode
+  :ensure t)
+
+;; Clojure REPL and compiler
+(use-package cider
+  :ensure t
+  :hook
+  (clojure-mode . cider-mode))
+
 ;; Lisp mode
 (use-package slime
   :ensure t
@@ -239,6 +249,8 @@
   :ensure t)
 (use-package zone-sl
   :ensure t)
+(use-package pacmacs
+  :ensure t)
 
 
 
@@ -305,7 +317,6 @@
 ;; On LaTeX buffers
 (add-hook 'LaTeX-mode-hook
           (lambda()
-            (setq-local indent-tabs-mode t)
             (if (y-or-n-p "Activate LaTeX preview pane on this buffer?") (latex-preview-pane-mode))))
 
 ;; On text-editing buffers
