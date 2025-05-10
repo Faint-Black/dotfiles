@@ -295,9 +295,11 @@
 (setq-default eval-expression-print-length nil) ;; remove eval print length limit
 (setq-default eval-expression-print-level nil) ;; remove eval print level limit
 
-;; Grep mode setting
+;; Grep mode settings
 (setq-default grep-command "grep -nHrZ --color=auto ")
 
+;; Dired backend mode settings
+(setq-default dired-listing-switches "-alh --group-directories-first")
 
 
 ;;-----------------------------------------------------------------------+
