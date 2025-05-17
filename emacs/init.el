@@ -302,6 +302,7 @@
 (setq-default dired-listing-switches "-alh --group-directories-first")
 
 
+
 ;;-----------------------------------------------------------------------+
 ;; CUSTOM HOOKS                                                          |
 ;;-----------------------------------------------------------------------+
@@ -337,14 +338,9 @@
 ;; CUSTOM KEYBINDS                                                       |
 ;;-----------------------------------------------------------------------+
 
-;; Helper functions, for no reason whatsoever
 (defun leader-keybind(KEY COMMAND)
   "Binds <C-c KEY> to COMMAND"
   (global-set-key (kbd (concat "C-c " KEY)) COMMAND))
-
-(defun meta-keybind(KEY COMMAND)
-  "Binds <M-KEY> to COMMAND"
-  (global-set-key (kbd (concat "M-" KEY)) COMMAND))
 
 ;; Open terminal emulator window
 (leader-keybind "t" 'vterm)
@@ -358,6 +354,10 @@
 (leader-keybind "d" 'lsp-goto-type-definition)
 ;; (LSP) show buffer errors with diagnostics
 (leader-keybind "e" 'flymake-show-buffer-diagnostics)
+
+(defun meta-keybind(KEY COMMAND)
+  "Binds <M-KEY> to COMMAND"
+  (global-set-key (kbd (concat "M-" KEY)) COMMAND))
 
 ;; Drag selection up
 (meta-keybind "p" 'drag-stuff-up)
