@@ -1,2 +1,4 @@
-# dotfiles
-Mirror of my personal configuration files, mainly emphasizing my Emacs init.el
+# Dot files
+Mirror of my personal configuration files.
+
+Mainly emphasizing my Emacs init script.
