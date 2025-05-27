@@ -1,0 +1,18 @@
+# Configuration dotfile for customized LaTeX compilation.
+
+# Compilation process:
+# [0] for no PDF output.
+# [1] generate PDF with pdflatex, specified by $pdflatex.
+# [2] generate PDF from PS, specified by $ps2pdf.
+# [3] generate PDF from DVI, specified by $dvipdf.
+# [4] generate PDF with lualatex, specified by $lualatex.
+# [5] generate PDF with xelatex, specified by $xelatex.
+$pdf_mode = 1;
+
+# Engine variable specifications:
+# [%O] options
+# [%S] input source files
+$bibtex = 'bibtex %O %S';
+$biber = 'biber %O %S';
+$latex = 'latex -interaction=nonstopmode -shell-escape -synctex=1 %O %S';
+$pdflatex = 'pdflatex -interaction=nonstopmode -shell-escape -synctex=1 %O %S';

@@ -222,7 +222,10 @@
 ;; Live pdf preview pane
 ;; (not the actual reader, just a pkg that automates the pdf viewing process)
 (use-package latex-preview-pane
-  :ensure t)
+  :ensure t
+  :custom
+  (shell-escape-mode "-shell-escape")
+  (pdf-latex-command "latexmk"))
 
 ;; Make auctex and latexmk work with eachother, necessary for synctex
 (use-package auctex-latexmk
