@@ -138,8 +138,7 @@
   (company-idle-delay 0.1)
   (company-minimum-prefix-length 1)
   :config
-  (setq company-backends ;; remove buffer related auto-completion suggestions
-        (remove 'company-dabbrev company-backends)))
+  (delq 'company-dabbrev company-backends))
 
 ;; LSP snippets
 (use-package yasnippet
@@ -220,7 +219,7 @@
   (pdf-view-continuous nil))
 
 ;; Live pdf preview pane
-;; (not the actual reader, just a pkg that automates the pdf viewing process)
+;; (not the actual reader, just a package that automates the pdf viewing process)
 (use-package latex-preview-pane
   :ensure t
   :custom
