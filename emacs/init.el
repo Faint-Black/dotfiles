@@ -36,6 +36,12 @@
 (use-package vterm
   :ensure t)
 
+;; Inherit .bashrc PATH variable
+(use-package exec-path-from-shell
+  :ensure t
+  :config
+  (exec-path-from-shell-initialize))
+
 ;; Dired file icons
 (use-package nerd-icons-dired
   :ensure t
