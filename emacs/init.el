@@ -340,6 +340,16 @@
           (lambda()
             (org-display-inline-images)))
 
+;; On asssembly buffers
+(add-hook 'asm-mode-hook
+          (lambda()
+            (setq-local indent-line-function #'ignore)
+            (keymap-local-set ";" 'self-insert-command)
+            (keymap-local-set "TAB"
+                              (lambda()
+                                (interactive)
+                                (insert "    "))))) ; holy hack!
+
 
 
 ;;-----------------------------------------------------------------------+
