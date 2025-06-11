@@ -229,8 +229,9 @@
 (use-package latex-preview-pane
   :ensure t
   :custom
+  (latex-preview-pane-multifile-mode 'auctex)
   (shell-escape-mode "-shell-escape")
-  (pdf-latex-command "latexmk"))
+  (pdf-latex-command "pdflatex"))
 
 ;; Make auctex and latexmk work with eachother, necessary for synctex
 (use-package auctex-latexmk
@@ -296,12 +297,13 @@
 (setq-default disabled-command-function nil)
 
 ;; Compilation mode settings
-(setq-default compilation-ask-about-save nil) ;; auto-save when compiling
+(setq-default compilation-ask-about-save nil)         ;; auto-save when compiling
 (setq-default compilation-auto-jump-to-first-error t) ;; jump to first error
+(setq-default compile-command "make")                 ;; default compile prompt
 
 ;; Elisp evaluation settings
 (setq-default eval-expression-print-length nil) ;; remove eval print length limit
-(setq-default eval-expression-print-level nil) ;; remove eval print level limit
+(setq-default eval-expression-print-level nil)  ;; remove eval print level limit
 
 ;; Grep mode settings
 (setq-default grep-command "grep -nHrZ --color=auto ")

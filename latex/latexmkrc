@@ -9,12 +9,13 @@
 # [5] generate PDF with xelatex, specified by $xelatex.
 
 $pdf_mode = 1;
+$recorder = 1;
 
 # Engine variable specifications:
-# [%O] options
+# [%O] extra options
 # [%S] input source files
 
 $bibtex = 'bibtex %O %S';
 $biber = 'biber %O %S';
-$latex = 'latex -interaction=nonstopmode -shell-escape -synctex=1 %O %S';
-$pdflatex = 'pdflatex -interaction=nonstopmode -shell-escape -synctex=1 %O %S';
+$latex = 'latex -file-line-error -interaction=nonstopmode -halt-on-error -shell-escape -synctex=1 %O %S';
+$pdflatex = 'pdflatex -file-line-error -interaction=nonstopmode -halt-on-error -shell-escape -synctex=1 %O %S';
