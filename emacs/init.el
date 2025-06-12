@@ -228,6 +228,8 @@
 ;; (not the actual reader, just a package that automates the pdf viewing process)
 (use-package latex-preview-pane
   :ensure t
+  :config
+  (define-key latex-preview-pane-mode-map (kbd "M-p") nil)
   :custom
   (latex-preview-pane-multifile-mode 'auctex)
   (shell-escape-mode "-shell-escape")
@@ -330,7 +332,15 @@
 ;; On LaTeX buffers
 (add-hook 'LaTeX-mode-hook
           (lambda()
-            (if (y-or-n-p "Activate LaTeX preview pane on this buffer?") (latex-preview-pane-mode))))
+            (if (y-or-n-p "Activate LaTeX preview pane on this buffer?")
+                (latex-preview-pane-mode))
+            (keymap-local-set "M-p"
+                              (lambda()
+                                (interactive)
+                                (latex-preview-pane-update)
+                                (if (directory-files default-directory nil "\\.synctex\\.gz$")
+                                    (call-process-shell-command "latexmk -silent")
+                                  (call-process-shell-command "latexmk -gg -silent"))))))
 
 ;; On text-editing buffers
 (add-hook 'text-mode-hook
