@@ -338,9 +338,7 @@
                               (lambda()
                                 (interactive)
                                 (latex-preview-pane-update)
-                                (if (directory-files default-directory nil "\\.synctex\\.gz$")
-                                    (call-process-shell-command "latexmk -silent")
-                                  (call-process-shell-command "latexmk -gg -silent"))))))
+                                (call-process-shell-command "latexmk -gg -silent")))))
 
 ;; On text-editing buffers
 (add-hook 'text-mode-hook
