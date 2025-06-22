@@ -425,7 +425,10 @@
 (setq org-agenda-span 30)
 (setq org-agenda-format-date "%d %B %Y")
 
-
+;; Org HTML/CSS export settings
+(setq org-html-indent nil)
+(setq org-html-validation-link "")
+(setq org-html-style-default "")
 
 ;;-----------------------------------------------------------------------+
 ;; ANNOYING AUTO-GENERATED CODE BY CUSTOM, CONTAIN IT HERE!              |
