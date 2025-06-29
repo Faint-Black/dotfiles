@@ -255,13 +255,13 @@
 
 ;; Fun zone
 (use-package nyan-mode
-  :ensure t)
+  :ensure nil)
 (use-package fireplace
-  :ensure t)
+  :ensure nil)
 (use-package zone-sl
-  :ensure t)
+  :ensure nil)
 (use-package pacmacs
-  :ensure t)
+  :ensure nil)
 
 
 
@@ -338,7 +338,8 @@
                               (lambda()
                                 (interactive)
                                 (latex-preview-pane-update)
-                                (call-process-shell-command "latexmk -gg -silent")))))
+                                (call-process-shell-command "latexmk -gg -silent")
+                                (latex-preview-pane-update)))))
 
 ;; On text-editing buffers
 (add-hook 'text-mode-hook
