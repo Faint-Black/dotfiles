@@ -4,11 +4,14 @@
 
 (defconst home-file "~/Desktop/notes/emacs/home.org")
 (defconst agenda-file "~/Desktop/notes/emacs/org-files/Calendar.org")
+(defconst has-command-line-args (> (length command-line-args) 1))
 
-(if (file-exists-p home-file)
-    (setq initial-buffer-choice home-file))
-(if (file-exists-p agenda-file)
-    (setq org-agenda-files (list agenda-file)))
+(if (not has-command-line-args)
+    (progn
+      (if (file-exists-p home-file)
+          (setq initial-buffer-choice home-file))
+      (if (file-exists-p agenda-file)
+          (setq org-agenda-files (list agenda-file)))))
 
 
 
@@ -322,7 +325,8 @@
 ;; On init
 (add-hook 'emacs-startup-hook
           (lambda()
-            (if (file-exists-p agenda-file) (org-agenda-list))))
+            (if (and (file-exists-p agenda-file) (not has-command-line-args))
+                (org-agenda-list))))
 
 ;; On programming buffers
 (add-hook 'prog-mode-hook
