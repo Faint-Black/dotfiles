@@ -35,6 +35,10 @@
 (use-package magit
   :ensure t)
 
+;; Docker integration
+(use-package docker
+  :ensure t)
+
 ;; Better terminal emulator
 (use-package vterm
   :ensure t)

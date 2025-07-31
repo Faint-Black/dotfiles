@@ -10,39 +10,6 @@ cdfzf() {
   cd "$selected_dir"
 }
 
-ffmpeg-compress-video() {
-  if [ -z "$1" ]; then
-    echo "You must provide an input parameter."
-    return 1
-  fi
-
-  ffmpeg -i $1 -vf "scale='if(gt(iw,ih),720,-1)':'if(gt(ih,iw),720,-1)', pad='ceil(iw/2)*2:ceil(ih/2)*2:(ow-iw)/2:(oh-ih)/2'" -c:v libx264 -preset veryslow -r 24 -crf 27 -c:a aac -b:a 128k compressed.mp4
-
-  local green=$(tput setaf 2)
-  local bold=$(tput bold)
-  local reset=$(tput sgr0)
-  echo "${bold}${green}COMPRESSION COMPLETE.${reset}"
-  echo " "
-  echo "${bold}Video filesizes comparison${reset}:"
-  echo "-input:"
-  du -h $1
-  echo "-output:"
-  du -h compressed.mp4
-  echo " "
-  echo "${bold}Video resolutions comparison${reset}:"
-  echo "-input:"
-  ffprobe -v error -show_entries stream=width,height -of default=nw=1:nk=1 $1
-  echo "-output:"
-  ffprobe -v error -show_entries stream=width,height -of default=nw=1:nk=1 compressed.mp4
-  echo " "
-  echo "${bold}Video bitrates comparison${reset}:"
-  echo "-input:"
-  echo "$(ffprobe -v error -show_entries format=bit_rate -of default=nw=1:nk=1 $1 | numfmt --to=si)b/s"
-  echo "-output:"
-  echo "$(ffprobe -v error -show_entries format=bit_rate -of default=nw=1:nk=1 compressed.mp4 | numfmt --to=si)b/s"
-  echo " "
-}
-
 useful-commands() {
   local bold=$(tput bold)
   local reset=$(tput sgr0)
