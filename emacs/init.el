@@ -159,6 +159,10 @@
   :hook
   (prog-mode . yas-minor-mode))
 
+;; Org-mode cookbook recipes
+(use-package org-chef
+  :ensure t)
+
 ;; Pretty org-mode custom headline bullet points
 (use-package org-superstar
   :ensure t
@@ -259,6 +263,12 @@
   :ensure t
   :hook
   (compilation-filter . ansi-color-compilation-filter))
+
+;; Only show current major mode in modeline
+(use-package minions
+  :ensure t
+  :config
+  (minions-mode 1))
 
 ;; Fun zone
 (use-package nyan-mode
@@ -465,4 +475,4 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages '(zig-mode org-superstar calfw-org calfw)))
+ '(package-selected-packages '(org-chef zig-mode org-superstar calfw-org calfw)))
