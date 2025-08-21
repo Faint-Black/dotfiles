@@ -11,9 +11,23 @@
   (global-set-key (kbd (concat "C-c " KEY)) COMMAND))
 
 ;; Keybind setter helper function
+(defun ctrl-keybind(KEY COMMAND)
+  "Binds <C-KEY> to COMMAND"
+  (global-set-key (kbd (concat "C-" KEY)) COMMAND))
+
+;; Keybind setter helper function
 (defun meta-keybind(KEY COMMAND)
   "Binds <M-KEY> to COMMAND"
   (global-set-key (kbd (concat "M-" KEY)) COMMAND))
+
+;; Keybind setter
+(defun set-custom-keybind(PREFIX KEY COMMAND)
+  "Prefix may be \"CONTROL\" or \"META\", binds <PRE-KEY> to COMMAND."
+  (cond
+   ((string= PREFIX "LEADER") (leader-keybind KEY COMMAND))
+   ((string= PREFIX "CONTROL") (ctrl-keybind KEY COMMAND))
+   ((string= PREFIX "META") (meta-keybind KEY COMMAND))
+   (t (error "Unknown prefix"))))
 
 
 
@@ -421,21 +435,21 @@
 ;;-----------------------------------------------------------------------+
 
 ;; Open terminal emulator window
-(leader-keybind "t" 'vterm)
+(set-custom-keybind "LEADER" "t" #'vterm)
 ;; Open compilation mode
-(leader-keybind "c" 'compile)
+(set-custom-keybind "LEADER" "c" #'compile)
 ;; Open org agenda calendar
-(leader-keybind "a c" 'cfw:open-org-calendar)
+(set-custom-keybind "LEADER" "a c" #'cfw:open-org-calendar)
 ;; Open org agenda TODO entries
-(leader-keybind "a t" 'org-todo-list)
+(set-custom-keybind "LEADER" "a t" #'org-todo-list)
 ;; (LSP) open definition of hovered identifier
-(leader-keybind "d" 'lsp-goto-type-definition)
+(set-custom-keybind "LEADER" "d" #'lsp-goto-type-definition)
 ;; (LSP) show buffer errors with diagnostics
-(leader-keybind "e" 'flymake-show-buffer-diagnostics)
-
-;; Drag selection up/down
-(meta-keybind "p" 'drag-stuff-up)
-(meta-keybind "n" 'drag-stuff-down)
+(set-custom-keybind "LEADER" "e" #'flymake-show-buffer-diagnostics)
+;; Drag selection up
+(set-custom-keybind "META" "p" #'drag-stuff-up)
+;; Drag selection down
+(set-custom-keybind "META" "n" #'drag-stuff-down)
 
 
 
