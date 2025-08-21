@@ -1,10 +1,32 @@
 ;;-----------------------------------------------------------------------+
-;; USER-SPECIFIC FILEPATHS, DONT FORGET TO CHANGE THIS!!                 |
+;; UTILITIES                                                             |
 ;;-----------------------------------------------------------------------+
 
+;; Check if emacs was invoked on a terminal with filepath arguments
+(defconst has-command-line-args (> (length command-line-args) 1))
+
+;; Keybind setter helper function
+(defun leader-keybind(KEY COMMAND)
+  "Binds <C-c KEY> to COMMAND"
+  (global-set-key (kbd (concat "C-c " KEY)) COMMAND))
+
+;; Keybind setter helper function
+(defun meta-keybind(KEY COMMAND)
+  "Binds <M-KEY> to COMMAND"
+  (global-set-key (kbd (concat "M-" KEY)) COMMAND))
+
+
+
+;;-----------------------------------------------------------------------+
+;; USER-SPECIFIC FILEPATHS                                               |
+;;-----------------------------------------------------------------------+
+
+;; Each function that uses these values first checks if they even exist
+;; in the first place, so don't worry about not having these
+;; files on your machine. My code is built to handle the exceptions by
+;; simply doing nothing if the files do not exist.
 (defconst home-file "~/Desktop/notes/emacs/home.org")
 (defconst agenda-file "~/Desktop/notes/emacs/org-files/Calendar.org")
-(defconst has-command-line-args (> (length command-line-args) 1))
 
 (if (not has-command-line-args)
     (progn
@@ -169,7 +191,14 @@
   :hook
   (org-mode . org-superstar-mode)
   :custom
-  (org-superstar-headline-bullets-list '("‣" "⊙" "➤" "•" "◦" "⊛")))
+  (org-superstar-headline-bullets-list
+   (list
+    (string 8227)    ; (U+2023) Triangular Bullet
+    (string 8857)    ; (U+2299) Circled Dot Operator
+    (string 10148)   ; (U+27a4) Black Rightwards Arrowhead
+    (string 8226)    ; (U+2022) Bullet
+    (string 9702)    ; (U+25e6) White Bullet
+    (string 8859)))) ; (U+229b) Circled Asterisk Operator
 
 ;; Pretty org-mode calendar/agenda
 (use-package calfw :ensure t)
@@ -337,57 +366,59 @@
 ;;-----------------------------------------------------------------------+
 
 ;; On init
-(add-hook 'emacs-startup-hook
-          (lambda()
-            (if (and (file-exists-p agenda-file) (not has-command-line-args))
-                (org-agenda-list))))
+(add-hook
+ 'emacs-startup-hook
+ (lambda()
+   (if (and (file-exists-p agenda-file) (not has-command-line-args))
+       (org-agenda-list))))
 
 ;; On programming buffers
-(add-hook 'prog-mode-hook
-          (lambda()
-            (setq-local show-trailing-whitespace t)))
+(add-hook
+ 'prog-mode-hook
+ (lambda()
+   (setq-local show-trailing-whitespace t)))
 
 ;; On LaTeX buffers
-(add-hook 'LaTeX-mode-hook
-          (lambda()
-            (if (y-or-n-p "Activate LaTeX preview pane on this buffer?")
-                (latex-preview-pane-mode))
-            (keymap-local-set "M-p"
-                              (lambda()
-                                (interactive)
-                                (latex-preview-pane-update)
-                                (call-process-shell-command "latexmk -gg -silent")
-                                (latex-preview-pane-update)))))
+(add-hook
+ 'LaTeX-mode-hook
+ (lambda()
+   (if (y-or-n-p "Activate LaTeX preview pane on this buffer?")
+       (latex-preview-pane-mode))
+   (keymap-local-set "M-p"
+                     (lambda()
+                       (interactive)
+                       (latex-preview-pane-update)
+                       (call-process-shell-command "latexmk -gg -silent")
+                       (latex-preview-pane-update)))))
 
 ;; On text-editing buffers
-(add-hook 'text-mode-hook
-          (lambda()
-            (visual-line-mode)))
+(add-hook
+ 'text-mode-hook
+ (lambda()
+   (visual-line-mode)))
 
 ;; On org-mode buffers
-(add-hook 'org-mode-hook
-          (lambda()
-            (org-display-inline-images)))
+(add-hook
+ 'org-mode-hook
+ (lambda()
+   (org-display-inline-images)))
 
-;; On asssembly buffers
-(add-hook 'asm-mode-hook
-          (lambda()
-            (setq-local indent-line-function #'ignore)
-            (keymap-local-set ";" 'self-insert-command)
-            (keymap-local-set "TAB"
-                              (lambda()
-                                (interactive)
-                                (insert "    "))))) ; holy hack!
+;; On assembly buffers
+(add-hook
+ 'asm-mode-hook
+ (lambda()
+   (setq-local indent-line-function #'ignore)
+   (keymap-local-set ";" 'self-insert-command)
+   (keymap-local-set "TAB"
+                     (lambda()
+                       (interactive)
+                       (insert "    "))))) ; holy hack!
 
 
 
 ;;-----------------------------------------------------------------------+
 ;; CUSTOM KEYBINDS                                                       |
 ;;-----------------------------------------------------------------------+
-
-(defun leader-keybind(KEY COMMAND)
-  "Binds <C-c KEY> to COMMAND"
-  (global-set-key (kbd (concat "C-c " KEY)) COMMAND))
 
 ;; Open terminal emulator window
 (leader-keybind "t" 'vterm)
@@ -402,13 +433,8 @@
 ;; (LSP) show buffer errors with diagnostics
 (leader-keybind "e" 'flymake-show-buffer-diagnostics)
 
-(defun meta-keybind(KEY COMMAND)
-  "Binds <M-KEY> to COMMAND"
-  (global-set-key (kbd (concat "M-" KEY)) COMMAND))
-
-;; Drag selection up
+;; Drag selection up/down
 (meta-keybind "p" 'drag-stuff-up)
-;; Drag selection down
 (meta-keybind "n" 'drag-stuff-down)
 
 
@@ -444,10 +470,12 @@
 (setq org-agenda-span 30)
 (setq org-agenda-format-date "%d %B %Y")
 
-;; Org HTML/CSS export settings
+;; Org HTML export settings
 (setq org-html-indent nil)
 (setq org-html-validation-link "")
 (setq org-html-style-default "")
+
+
 
 ;;-----------------------------------------------------------------------+
 ;; ANNOYING AUTO-GENERATED CODE BY CUSTOM, CONTAIN IT HERE!              |
