@@ -41,6 +41,7 @@
 ;; simply doing nothing if the files do not exist.
 (defconst home-file "~/Desktop/notes/emacs/home.org")
 (defconst agenda-file "~/Desktop/notes/emacs/org-files/Calendar.org")
+(defconst cookbook-file "~/Desktop/notes/emacs/org-files/Recipes.org")
 
 (if (not has-command-line-args)
     (progn
@@ -197,7 +198,37 @@
 
 ;; Org-mode cookbook recipes
 (use-package org-chef
-  :ensure t)
+  :ensure t
+  :config
+  (setq org-capture-templates
+        (if (file-exists-p cookbook-file)
+            (list
+             (list "c" "Cookbook"
+                   'entry
+                   (list 'file cookbook-file)
+                   "%(org-chef-get-recipe-from-url)"
+                   ':empty-lines 1)
+             (list "z" "Protocol Cookbook"
+                   'entry
+                   (list 'file cookbook-file)
+                   "%(org-chef-get-recipe-string-from-url \"%:link\")"
+                   ':empty-lines 1)
+             (list "m" "Manual Cookbook"
+                   'entry
+                   (list 'file cookbook-file)
+                   (concat
+                    "* %^{Recipe title: }\n"
+                    "  :PROPERTIES:\n"
+                    "  :source-url:\n"
+                    "  :servings:\n"
+                    "  :prep-time:\n"
+                    "  :cook-time:\n"
+                    "  :ready-in:\n"
+                    "  :END:\n"
+                    "** Ingredients\n"
+                    "   %?\n"
+                    "** Directions\n\n")))
+          nil)))
 
 ;; Pretty org-mode custom headline bullet points
 (use-package org-superstar
