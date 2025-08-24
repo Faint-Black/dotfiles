@@ -404,6 +404,15 @@
 ;; Dired backend mode settings
 (setq-default dired-listing-switches "-alh --group-directories-first")
 
+;; SSH access variables
+(setq tramp-remote-path
+      (append tramp-remote-path
+              (list
+               ;; Magic thing that makes other thing work
+               'tramp-own-remote-path
+               ;; GuixSD PATH
+               "/run/current-system/profile/bin")))
+
 
 
 ;;-----------------------------------------------------------------------+
@@ -548,4 +557,5 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(auth-source-save-behavior nil)
  '(package-selected-packages '(org-chef zig-mode org-superstar calfw-org calfw)))

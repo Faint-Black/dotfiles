@@ -1,2 +1,2 @@
-# sync files to repo
-sync_files.sh
+# file sync scripts
+sync_*
