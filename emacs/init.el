@@ -100,13 +100,13 @@
   (emacs-lisp-mode . rainbow-delimiters-mode)
   :custom-face
   (rainbow-delimiters-depth-1-face ((t :foreground "#FFFFFF" :weight bold)))
-  (rainbow-delimiters-depth-2-face ((t :foreground "#7FFFFF")))
-  (rainbow-delimiters-depth-3-face ((t :foreground "#FF7FFF")))
+  (rainbow-delimiters-depth-2-face ((t :foreground "#80FFFF")))
+  (rainbow-delimiters-depth-3-face ((t :foreground "#FF80FF")))
   (rainbow-delimiters-depth-4-face ((t :foreground "#FFFF00")))
-  (rainbow-delimiters-depth-5-face ((t :foreground "#7F7FFF")))
-  (rainbow-delimiters-depth-6-face ((t :foreground "#FF7F7F")))
-  (rainbow-delimiters-depth-7-face ((t :foreground "#7FFF7F")))
-  (rainbow-delimiters-depth-8-face ((t :foreground "#7F7F7F")))
+  (rainbow-delimiters-depth-5-face ((t :foreground "#8080FF")))
+  (rainbow-delimiters-depth-6-face ((t :foreground "#FF8080")))
+  (rainbow-delimiters-depth-7-face ((t :foreground "#80FF80")))
+  (rainbow-delimiters-depth-8-face ((t :foreground "#808080")))
   (rainbow-delimiters-depth-9-face ((t :foreground "#FF00FF"))))
 
 ;; Ziglang mode
@@ -126,6 +126,15 @@
 ;; Clojure mode
 (use-package clojure-mode
   :ensure t)
+
+;; Scheme backend
+(use-package geiser
+  :ensure t)
+
+;; Guile mode
+(use-package geiser-guile
+  :ensure t
+  :after geiser)
 
 ;; Clojure REPL and compiler
 (use-package cider
@@ -184,11 +193,13 @@
   (lisp-mode . company-mode)
   (lsp-mode . company-mode)
   (LaTeX-mode . company-mode)
+  ((geiser-mode geiser-repl-mode) . company-mode)
   :custom
   (company-idle-delay 0.1)
   (company-minimum-prefix-length 1)
   :config
-  (delq 'company-dabbrev company-backends))
+  (delq 'company-dabbrev company-backends)
+  (add-to-list 'company-backends 'company-capf))
 
 ;; LSP snippets
 (use-package yasnippet
@@ -558,4 +569,5 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(auth-source-save-behavior nil)
- '(package-selected-packages '(org-chef zig-mode org-superstar calfw-org calfw)))
+ '(package-selected-packages
+   '(geiser-guile geiser org-chef zig-mode org-superstar calfw-org calfw)))
