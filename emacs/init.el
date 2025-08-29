@@ -382,6 +382,7 @@
 ;; Mode line settings
 (setq-default mode-line-compact t)
 (display-time)
+(display-battery-mode)
 
 ;; Tabs to spaces and indentation settings
 (setq-default indent-tabs-mode nil)
