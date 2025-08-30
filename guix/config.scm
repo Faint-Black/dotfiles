@@ -26,6 +26,28 @@
                      ssh
                      xorg)
 
+(define %packagelist-essential
+  %base-packages)
+
+(define %packagelist-networking
+  (list fail2ban
+        curl
+        wget))
+
+(define %packagelist-administration
+  (list btop
+        fastfetch
+        turbostat))
+
+(define %packagelist-development
+  (list git
+        gcc
+        docker))
+
+(define %packagelist-emacs
+  (list emacs
+        emacs-guix))
+
 ;;----------------------------------------------------------------------------;;
 ;; Software/Hardware settings.                                                ;;
 ;;----------------------------------------------------------------------------;;
@@ -53,25 +75,11 @@
  ;; List of system packages.                                                  ;;
  ;;- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -;;
  (packages
-  (append
-   (list git
-         ;; System networking packages.
-         fail2ban
-         curl
-         wget
-         ;; System administration packages.
-         btop
-         fastfetch
-         turbostat
-         ;; System backup packages.
-         rsync
-         ;; Development packages.
-         gcc
-         docker
-         ;; Emacs et al.
-         emacs
-         emacs-guix)
-   %base-packages))
+  (append %packagelist-essential
+          %packagelist-networking
+          %packagelist-administration
+          %packagelist-development
+          %packagelist-emacs))
  ;;- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -;;
  ;; List of daemon service packages.                                          ;;
  ;;- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -;;
