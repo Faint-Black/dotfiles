@@ -9,8 +9,13 @@
 ;;----------------------------------------------------------------------------;;
 (use-modules (gnu)
              (gnu services)
-             (gnu packages gcc)
+             (gnu packages linux)
              (gnu packages admin)
+             (gnu packages gcc)
+             (gnu packages docker)
+             (gnu packages curl)
+             (gnu packages wget)
+             (gnu packages rsync)
              (gnu packages version-control)
              (gnu packages emacs)
              (gnu packages emacs-xyz))
@@ -26,8 +31,8 @@
 ;;----------------------------------------------------------------------------;;
 (operating-system
  ;;- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -;;
- ;; Simple one-liner settings.                                                ;;
- ;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ;;
+ ;; Simple one-liner definitions.                                             ;;
+ ;;- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -;;
  (locale "en_US.utf8")
  (timezone "America/Sao_Paulo")
  (keyboard-layout (keyboard-layout "br"))
@@ -35,7 +40,7 @@
  (kernel-arguments '("quiet" "modprobe.blacklist=radeon,amdgpu"))
  ;;- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -;;
  ;; List of users and groups ('root' is implicit).                            ;;
- ;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ;;
+ ;;- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -;;
  (users
   (cons*
    (user-account (name "cezar")
@@ -46,27 +51,30 @@
    %base-user-accounts))
  ;;- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -;;
  ;; List of system packages.                                                  ;;
- ;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ;;
+ ;;- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -;;
  (packages
   (append
    (list git
-         ;; Networking packages.
+         ;; System networking packages.
          fail2ban
+         curl
+         wget
+         ;; System administration packages.
+         btop
+         fastfetch
+         turbostat
+         ;; System backup packages.
+         rsync
          ;; Development packages.
          gcc
          docker
-         ;; System monitoring packages.
-         btop
-         fastfetch
-         ;; System backup packages.
-         rsync
-         ;; Emacs and its packages.
+         ;; Emacs et al.
          emacs
          emacs-guix)
    %base-packages))
  ;;- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -;;
  ;; List of daemon service packages.                                          ;;
- ;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ;;
+ ;;- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -;;
  (services
   (append
    (list (service openssh-service-type)
@@ -75,7 +83,7 @@
    %base-services))
  ;;- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -;;
  ;; GRUB settings.                                                            ;;
- ;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ;;
+ ;;- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -;;
  (bootloader
   (bootloader-configuration
    (bootloader grub-efi-bootloader)
@@ -83,14 +91,14 @@
    (keyboard-layout keyboard-layout)))
  ;;- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -;;
  ;; Swap memory partition settings.                                           ;;
- ;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ;;
+ ;;- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -;;
  (swap-devices
   (list
    (swap-space
     (target (uuid "1e4cff91-2358-4edb-9c27-06add6d6bf5e")))))
  ;;- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -;;
  ;; FS/Mounting/Partition settings.                                           ;;
- ;; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ;;
+ ;;- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -;;
  (file-systems
   (cons*
    (file-system (mount-point "/boot/efi")
