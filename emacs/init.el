@@ -463,12 +463,6 @@
  (lambda()
    (visual-line-mode)))
 
-;; On org-mode buffers
-(add-hook
- 'org-mode-hook
- (lambda()
-   (org-display-inline-images)))
-
 ;; On assembly buffers
 (add-hook
  'asm-mode-hook
@@ -535,11 +529,6 @@
 ;; Org agenda configurations
 (setq org-agenda-span 30)
 (setq org-agenda-format-date "%d %B %Y")
-
-;; Org HTML export settings
-(setq org-html-indent nil)
-(setq org-html-validation-link "")
-(setq org-html-style-default "")
 
 
 
