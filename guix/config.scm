@@ -10,13 +10,16 @@
 (use-modules (gnu)
              (gnu services)
              (gnu packages linux)
+             (gnu packages web)
              (gnu packages admin)
              (gnu packages gcc)
+             (gnu packages zig)
              (gnu packages docker)
              (gnu packages curl)
              (gnu packages wget)
              (gnu packages rsync)
              (gnu packages version-control)
+             (gnu packages java)
              (gnu packages emacs)
              (gnu packages emacs-xyz))
 
@@ -32,7 +35,8 @@
 (define %packagelist-networking
   (list fail2ban
         curl
-        wget))
+        wget
+        nginx))
 
 (define %packagelist-administration
   (list btop
@@ -42,11 +46,17 @@
 (define %packagelist-development
   (list git
         gcc
+        zig
+        openjdk
         docker))
 
 (define %packagelist-emacs
   (list emacs
-        emacs-guix))
+        emacs-guix
+        emacs-company
+        emacs-magit
+        emacs-org
+        emacs-vterm))
 
 ;;----------------------------------------------------------------------------;;
 ;; Software/Hardware settings.                                                ;;
