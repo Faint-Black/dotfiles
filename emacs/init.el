@@ -123,6 +123,11 @@
   (haskell-indentation-where-post-offset 4)
   (haskell-indentation-where-pre-offset 4))
 
+;; Java language server provider
+(use-package lsp-java
+  :ensure t
+  :after lsp-mode)
+
 ;; Clojure mode
 (use-package clojure-mode
   :ensure t)
@@ -169,9 +174,10 @@
   :ensure t
   :commands lsp
   :hook
-  (zig-mode . lsp-mode) ;; zls
-  (c-mode . lsp-mode)   ;; clangd
-  (c++-mode . lsp-mode) ;; clangd
+  (java-mode . lsp-mode) ;; jdtls
+  (zig-mode . lsp-mode)  ;; zls
+  (c-mode . lsp-mode)    ;; clangd
+  (c++-mode . lsp-mode)  ;; clangd
   :custom
   (lsp-enable-symbol-highlighting t))
 
@@ -289,15 +295,15 @@
   (LaTeX-mode . TeX-source-correlate-mode)
   :config
   (setq TeX-electric-sub-and-superscript nil)
+  (setq tex-fontify-script nil)
+  (setq font-latex-fontify-script nil)
+  (setq TeX-source-correlate-mode t)
+  (setq TeX-source-correlate-start-server t)
   (setq TeX-brace-indent-level 4)
   (setq LaTeX-indent-level 4)
   (setq LaTeX-item-indent 0)
   (setq tex-indent-basic 4)
   (setq tex-indent-item 4)
-  (setq tex-fontify-script nil)
-  (setq font-latex-fontify-script nil)
-  (setq TeX-source-correlate-mode t)
-  (setq TeX-source-correlate-start-server t)
   :custom-face
   (font-latex-sectioning-1-face ((t :foreground "#40d080" :weight bold :height 1.5 :inherit nil)))
   (font-latex-sectioning-2-face ((t :foreground "#64d860" :weight bold :height 1.4 :inherit nil)))
@@ -405,6 +411,7 @@
 (setq-default compilation-ask-about-save nil)         ;; auto-save when compiling
 (setq-default compilation-auto-jump-to-first-error t) ;; jump to first error
 (setq-default compile-command "make")                 ;; default compile prompt
+(setq-default use-file-dialog nil)                    ;; disable file selector on error
 
 ;; Elisp evaluation settings
 (setq-default eval-expression-print-length nil) ;; remove eval print length limit
