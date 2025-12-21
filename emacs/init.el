@@ -42,6 +42,7 @@
 (defconst home-file "~/Desktop/notes/emacs/home.org")
 (defconst agenda-file "~/Desktop/notes/emacs/org-files/Calendar.org")
 (defconst cookbook-file "~/Desktop/notes/emacs/org-files/Recipes.org")
+(defconst feeds-file "~/Desktop/notes/emacs/org-files/Feed.org")
 
 (if (not has-command-line-args)
     (progn
@@ -123,11 +124,6 @@
   (haskell-indentation-where-post-offset 4)
   (haskell-indentation-where-pre-offset 4))
 
-;; Java language server provider
-(use-package lsp-java
-  :ensure t
-  :after lsp-mode)
-
 ;; Clojure mode
 (use-package clojure-mode
   :ensure t)
@@ -174,7 +170,6 @@
   :ensure t
   :commands lsp
   :hook
-  (java-mode . lsp-mode) ;; jdtls
   (zig-mode . lsp-mode)  ;; zls
   (c-mode . lsp-mode)    ;; clangd
   (c++-mode . lsp-mode)  ;; clangd
@@ -360,6 +355,20 @@
   :ensure t
   :config
   (minions-mode 1))
+
+;; RSS feed reader
+(use-package elfeed
+  :ensure t)
+
+;; Elfeed org-mode init file
+(use-package elfeed-org
+  :ensure t
+  :config
+  (elfeed-org)
+  (setq rmh-elfeed-org-files
+        (if (file-exists-p feeds-file)
+            (list feeds-file)
+          nil)))
 
 ;; Fun zone
 (use-package nyan-mode
