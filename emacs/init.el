@@ -432,6 +432,9 @@
 ;; Dired backend mode settings
 (setq-default dired-listing-switches "-alh --group-directories-first")
 
+;; "browse-url" decided to stop working...
+(setq-default browse-url-browser-function 'browse-url-xdg-open)
+
 ;; SSH access variables
 (setq tramp-remote-path
       (append tramp-remote-path
