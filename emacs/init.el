@@ -57,45 +57,41 @@
 ;; PACKAGE CONFIGURATIONS                                                |
 ;;-----------------------------------------------------------------------+
 
-;; Set up package sources and use-package
-(setq package-archives '(("melpa" . "https://melpa.org/packages/")
-                         ("org" . "https://orgmode.org/elpa/")
-                         ("elpa" . "https://elpa.gnu.org/packages/")))
+;; Set up package sources
+(setq package-archives
+      (list
+       (cons "melpa" "https://melpa.org/packages/")
+       (cons "org"   "https://orgmode.org/elpa/")
+       (cons "elpa"  "https://elpa.gnu.org/packages/")))
 (package-initialize)
-(unless package-archive-contents
-  (package-refresh-contents))
-(unless (package-installed-p 'use-package)
-  (package-install 'use-package))
+
+;; Manually install use-package
+(unless package-archive-contents (package-refresh-contents))
+(unless (package-installed-p 'use-package) (package-install 'use-package))
 (require 'use-package)
-(setq use-package-always-ensure t)
+(setq use-package-always-ensure t) ; ":ensure t" global default
 
 ;; Magit!
-(use-package magit
-  :ensure t)
+(use-package magit)
 
 ;; Docker integration
-(use-package docker
-  :ensure t)
+(use-package docker)
 
 ;; Better terminal emulator
-(use-package vterm
-  :ensure t)
+(use-package vterm)
 
 ;; Inherit .bashrc PATH variable
 (use-package exec-path-from-shell
-  :ensure t
   :config
   (exec-path-from-shell-initialize))
 
 ;; Dired file icons
 (use-package nerd-icons-dired
-  :ensure t
   :hook
   (dired-mode . nerd-icons-dired-mode))
 
 ;; Matching parentheses coloring
 (use-package rainbow-delimiters
-  :ensure t
   :hook
   (lisp-mode . rainbow-delimiters-mode)
   (emacs-lisp-mode . rainbow-delimiters-mode)
@@ -111,12 +107,10 @@
   (rainbow-delimiters-depth-9-face ((t :foreground "#FF00FF"))))
 
 ;; Ziglang mode
-(use-package zig-mode
-  :ensure t)
+(use-package zig-mode)
 
 ;; Haskell mode
 (use-package haskell-mode
-  :ensure t
   :custom
   (haskell-indentation-layout-offset 4)
   (haskell-indentation-left-offset 4)
@@ -125,27 +119,22 @@
   (haskell-indentation-where-pre-offset 4))
 
 ;; Clojure mode
-(use-package clojure-mode
-  :ensure t)
+(use-package clojure-mode)
 
 ;; Scheme backend
-(use-package geiser
-  :ensure t)
+(use-package geiser)
 
 ;; Guile mode
 (use-package geiser-guile
-  :ensure t
   :after geiser)
 
 ;; Clojure REPL and compiler
 (use-package cider
-  :ensure t
   :hook
   (clojure-mode . cider-mode))
 
 ;; Lisp mode
 (use-package slime
-  :ensure t
   :init
   (setq inferior-lisp-program "sbcl")
   :config
@@ -153,21 +142,18 @@
 
 ;; Lisp mode auto-completion
 (use-package slime-company
-  :ensure t
   :after (slime company)
   :config
   (setq company-backends '(company-slime)))
 
 ;; Automatic clang-format for C/C++ buffers
 (use-package clang-format
-  :ensure t
   :hook
   (c-mode . clang-format-on-save-mode)
   (c++-mode . clang-format-on-save-mode))
 
 ;; Language Service Providers
 (use-package lsp-mode
-  :ensure t
   :commands lsp
   :hook
   (zig-mode . lsp-mode)  ;; zls
@@ -178,7 +164,6 @@
 
 ;; LSP graphic information
 (use-package lsp-ui
-  :ensure t
   :hook
   (lsp-mode . lsp-ui-mode)
   :custom
@@ -187,7 +172,6 @@
 
 ;; LSP auto-completion and snippets
 (use-package company
-  :ensure t
   :init
   (global-company-mode)
   :hook
@@ -204,13 +188,11 @@
 
 ;; LSP snippets
 (use-package yasnippet
-  :ensure t
   :hook
   (prog-mode . yas-minor-mode))
 
 ;; Org-mode cookbook recipes
 (use-package org-chef
-  :ensure t
   :config
   (setq org-capture-templates
         (if (file-exists-p cookbook-file)
@@ -244,7 +226,6 @@
 
 ;; Pretty org-mode custom headline bullet points
 (use-package org-superstar
-  :ensure t
   :hook
   (org-mode . org-superstar-mode)
   :custom
@@ -258,9 +239,8 @@
     (string 8859)))) ; (U+229b) Circled Asterisk Operator
 
 ;; Pretty org-mode calendar/agenda
-(use-package calfw :ensure t)
+(use-package calfw)
 (use-package calfw-org
-  :ensure t
   :requires (calfw)
   :custom-face
   (cfw:face-annotation ((t :foreground "RosyBrown" :inherit cfw:face-day-title)))
@@ -284,7 +264,6 @@
 
 ;; LaTeX editing
 (use-package auctex
-  :ensure t
   :hook
   (LaTeX-mode . flyspell-mode)
   (LaTeX-mode . TeX-source-correlate-mode)
@@ -308,14 +287,12 @@
 
 ;; LaTeX auto-completion
 (use-package company-auctex
-  :ensure t
-  :requires (company) ;; me too...
+  :requires (company) ; me too...
   :config
   (company-auctex-init))
 
 ;; PDF tools for viewing documents
 (use-package pdf-tools
-  :ensure t
   :config
   (pdf-tools-install)
   :custom
@@ -324,7 +301,6 @@
 ;; Live pdf preview pane
 ;; (not the actual reader, just a package that automates the pdf viewing process)
 (use-package latex-preview-pane
-  :ensure t
   :config
   (define-key latex-preview-pane-mode-map (kbd "M-p") nil)
   :custom
@@ -334,35 +310,29 @@
 
 ;; Make auctex and latexmk work with eachother, necessary for synctex
 (use-package auctex-latexmk
-  :ensure t
   :config
   (auctex-latexmk-setup))
 
 ;; Move selected region up or down
 (use-package drag-stuff
-  :ensure t
   :config
   (drag-stuff-global-mode 1))
 
 ;; ANSI terminal colors for compilation mode buffers
 (use-package ansi-color
-  :ensure t
   :hook
   (compilation-filter . ansi-color-compilation-filter))
 
 ;; Only show current major mode in modeline
 (use-package minions
-  :ensure t
   :config
   (minions-mode 1))
 
 ;; RSS feed reader
-(use-package elfeed
-  :ensure t)
+(use-package elfeed)
 
 ;; Elfeed org-mode init file
 (use-package elfeed-org
-  :ensure t
   :config
   (elfeed-org)
   (setq rmh-elfeed-org-files
@@ -371,14 +341,12 @@
           nil)))
 
 ;; Fun zone
-(use-package nyan-mode
-  :ensure nil)
-(use-package fireplace
-  :ensure nil)
-(use-package zone-sl
-  :ensure nil)
-(use-package pacmacs
-  :ensure nil)
+(use-package nyan-mode)
+(use-package fireplace)
+(use-package zone-sl)
+(use-package pacmacs)
+(use-package blackjack)
+(use-package 2048-game)
 
 
 
@@ -579,4 +547,4 @@
  ;; If there is more than one, they won't work right.
  '(auth-source-save-behavior nil)
  '(package-selected-packages
-   '(geiser-guile geiser org-chef zig-mode org-superstar calfw-org calfw)))
+   '(2048-game elfeed-goodies geiser-guile geiser org-chef zig-mode org-superstar calfw-org calfw)))
