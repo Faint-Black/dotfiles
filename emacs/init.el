@@ -31,6 +31,8 @@
 
 
 
+
+
 ;;-----------------------------------------------------------------------+
 ;; USER-SPECIFIC FILEPATHS                                               |
 ;;-----------------------------------------------------------------------+
@@ -53,23 +55,23 @@
 
 
 
+
+
 ;;-----------------------------------------------------------------------+
 ;; PACKAGE CONFIGURATIONS                                                |
 ;;-----------------------------------------------------------------------+
 
 ;; Set up package sources
-(setq package-archives
-      (list
-       (cons "melpa" "https://melpa.org/packages/")
-       (cons "org"   "https://orgmode.org/elpa/")
-       (cons "elpa"  "https://elpa.gnu.org/packages/")))
+(setq package-archives (list (cons "melpa" "https://melpa.org/packages/")
+                             (cons "org" "https://orgmode.org/elpa/")
+                             (cons "elpa" "https://elpa.gnu.org/packages/")))
 (package-initialize)
+(unless package-archive-contents (package-refresh-contents))
 
 ;; Manually install use-package
-(unless package-archive-contents (package-refresh-contents))
 (unless (package-installed-p 'use-package) (package-install 'use-package))
 (require 'use-package)
-(setq use-package-always-ensure t) ; ":ensure t" global default
+(setq use-package-always-ensure t) ; ":ensure t" as global default
 
 ;; Magit!
 (use-package magit)
@@ -340,6 +342,11 @@
             (list feeds-file)
           nil)))
 
+;; Elfeed customization addons
+(use-package elfeed-goodies
+  :config
+  (elfeed-goodies/setup))
+
 ;; Fun zone
 (use-package nyan-mode)
 (use-package fireplace)
@@ -347,6 +354,8 @@
 (use-package pacmacs)
 (use-package blackjack)
 (use-package 2048-game)
+
+
 
 
 
@@ -414,6 +423,8 @@
 
 
 
+
+
 ;;-----------------------------------------------------------------------+
 ;; CUSTOM HOOKS                                                          |
 ;;-----------------------------------------------------------------------+
@@ -463,6 +474,8 @@
 
 
 
+
+
 ;;-----------------------------------------------------------------------+
 ;; CUSTOM KEYBINDS                                                       |
 ;;-----------------------------------------------------------------------+
@@ -483,6 +496,8 @@
 (set-custom-keybind "META" "p" #'drag-stuff-up)
 ;; Drag selection down
 (set-custom-keybind "META" "n" #'drag-stuff-down)
+
+
 
 
 
@@ -519,8 +534,10 @@
 
 
 
+
+
 ;;-----------------------------------------------------------------------+
-;; ANNOYING AUTO-GENERATED CODE BY CUSTOM, CONTAIN IT HERE!              |
+;; ANNOYING AUTO-GENERATED CODE BY CUSTOM-SET, CONTAIN IT HERE!          |
 ;;-----------------------------------------------------------------------+
 
 (custom-set-faces
