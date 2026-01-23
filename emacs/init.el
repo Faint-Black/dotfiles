@@ -347,6 +347,9 @@
   :config
   (elfeed-goodies/setup))
 
+;; Ledger accounting and budgeting
+(use-package ledger-mode)
+
 ;; Fun zone
 (use-package nyan-mode)
 (use-package fireplace)
@@ -564,4 +567,4 @@
  ;; If there is more than one, they won't work right.
  '(auth-source-save-behavior nil)
  '(package-selected-packages
-   '(2048-game elfeed-goodies geiser-guile geiser org-chef zig-mode org-superstar calfw-org calfw)))
+   '(ledger-mode 2048-game elfeed-goodies geiser-guile geiser org-chef zig-mode org-superstar calfw-org calfw)))
