@@ -108,8 +108,24 @@
   (rainbow-delimiters-depth-8-face ((t :foreground "#808080")))
   (rainbow-delimiters-depth-9-face ((t :foreground "#FF00FF"))))
 
+;; OpenGL shader mode
+(use-package glsl-mode)
+
+;; CMake mode
+(use-package cmake-mode)
+
 ;; Ziglang mode
 (use-package zig-mode)
+
+;; Julia mode
+(use-package julia-mode)
+
+;; Julia REPL
+(use-package julia-repl
+  :hook
+  (julia-mode . julia-repl-mode)
+  :config
+  (julia-repl-set-terminal-backend 'vterm))
 
 ;; Haskell mode
 (use-package haskell-mode
@@ -158,9 +174,9 @@
 (use-package lsp-mode
   :commands lsp
   :hook
-  (zig-mode . lsp-mode)  ;; zls
-  (c-mode . lsp-mode)    ;; clangd
-  (c++-mode . lsp-mode)  ;; clangd
+  (zig-mode . lsp-mode)   ; zls
+  (c-mode . lsp-mode)     ; clangd
+  (c++-mode . lsp-mode)   ; clangd
   :custom
   (lsp-enable-symbol-highlighting t))
 
@@ -567,4 +583,11 @@
  ;; If there is more than one, they won't work right.
  '(auth-source-save-behavior nil)
  '(package-selected-packages
-   '(ledger-mode 2048-game elfeed-goodies geiser-guile geiser org-chef zig-mode org-superstar calfw-org calfw)))
+   '(org julia-repl julia-mode cmake-mode glsl-mode ledger-mode 2048-game elfeed-goodies geiser-guile geiser org-chef zig-mode org-superstar calfw-org calfw))
+ '(safe-local-variable-values
+   '((org-latex-default-figure-position . "H")
+     (org-latex-src-block-backend . listings)
+     (org-html-style-default)
+     (org-html-validation-link)
+     (org-html-indent)
+     (org-confirm-babel-evaluate))))
