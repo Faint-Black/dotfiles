@@ -63,7 +63,6 @@
 
 ;; Set up package sources
 (setq package-archives (list (cons "melpa" "https://melpa.org/packages/")
-                             (cons "org" "https://orgmode.org/elpa/")
                              (cons "elpa" "https://elpa.gnu.org/packages/")))
 (package-initialize)
 (unless package-archive-contents (package-refresh-contents))
