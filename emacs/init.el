@@ -255,29 +255,43 @@
     (string 9702)    ; (U+25e6) White Bullet
     (string 8859)))) ; (U+229b) Circled Asterisk Operator
 
-;; Pretty org-mode calendar/agenda
+;; Pretty calendar
 (use-package calfw)
+
+;; Org-mode file integration for calendar
 (use-package calfw-org
   :requires (calfw)
   :custom-face
-  (cfw:face-annotation ((t :foreground "RosyBrown" :inherit cfw:face-day-title)))
-  (cfw:face-day-title ((t :background "unspecified")))
-  (cfw:face-default-content ((t :foreground "#bfebbf")))
-  (cfw:face-default-day ((t :weight bold :inherit cfw:face-day-title)))
-  (cfw:face-disable ((t :foreground "DarkGray" :inherit cfw:face-day-title)))
-  (cfw:face-grid ((t :foreground "DarkGrey")))
-  (cfw:face-header ((t (:foreground "#d0bf8f" :weight bold))))
-  (cfw:face-holiday ((t :foreground "#8c5353" :background "unspecified" :weight bold)))
-  (cfw:face-periods ((t :foreground "cyan")))
-  (cfw:face-saturday ((t :foreground "#a4cbff" :background "unspecified" :weight bold)))
-  (cfw:face-select ((t :background "#2f2f2f")))
-  (cfw:face-sunday ((t :foreground "#a4cbff" :background "unspecified" :weight bold)))
-  (cfw:face-title ((t (:foreground "#f0dfaf" :weight bold :height 2.0 :inherit variable-pitch))))
-  (cfw:face-today ((t :background: "#663333" :weight bold)))
-  (cfw:face-today-title ((t :background "#dd3333" :weight bold)))
-  (cfw:face-toolbar ((t :background "unspecified")))
-  (cfw:face-toolbar-button-off ((t :foreground "gray")))
-  (cfw:face-toolbar-button-on ((t :foreground "white" :weight bold :underline t))))
+  (calfw-title-face ; Face for title.
+   ((t :foreground "chocolate" :background "unspecified" :weight bold :height 2.0)))
+  (calfw-header-face ; Face for headers.
+   ((t :foreground "gray" :background "unspecified")))
+  (calfw-sunday-face ; Face for Sunday.
+   ((t :foreground "light steel blue" :background "unspecified")))
+  (calfw-saturday-face ; Face for Saturday.
+   ((t :foreground "light steel blue" :background "unspecified")))
+  (calfw-holiday-face ; Face for holidays.
+   ((t :foreground "rosy brown" :background "unspecified")))
+  (calfw-grid-face ; Face for grids.
+   ((t :foreground "gray" :background "unspecified")))
+  (calfw-default-content-face ; Face for default contents.
+   ((t :foreground "unspecified" :background "unspecified")))
+  (calfw-periods-face ; Face for period.
+   ((t :foreground "unspecified" :background "unspecified")))
+  (calfw-day-title-face ; Face for day title.
+   ((t :foreground "dim gray" :background "unspecified" :underline t)))
+  (calfw-default-day-face ; Face for default day.
+   ((t :foreground "unspecified" :background "unspecified")))
+  (calfw-annotation-face ; Face for annotations.
+   ((t :foreground "unspecified" :background "unspecified")))
+  (calfw-disable-face ; Face for days out of focused period.
+   ((t :foreground "dim gray" :background "unspecified")))
+  (calfw-today-title-face ; Face for today.
+   ((t :foreground "white" :background "red")))
+  (calfw-today-face ; Face for today.
+   ((t :foreground "white" :background "dark red")))
+  (calfw-calendar-hidden-face ; Face for calendars when hidden.
+   ((t :foreground "unspecified" :background "unspecified"))))
 
 ;; LaTeX editing
 (use-package auctex
@@ -499,21 +513,29 @@
 ;;-----------------------------------------------------------------------+
 
 ;; Open terminal emulator window
-(set-custom-keybind "LEADER" "t" #'vterm)
+(set-custom-keybind "LEADER" "t"
+                    #'vterm)
 ;; Open compilation mode
-(set-custom-keybind "LEADER" "c" #'compile)
+(set-custom-keybind "LEADER" "c"
+                    #'compile)
 ;; Open org agenda calendar
-(set-custom-keybind "LEADER" "a c" #'cfw:open-org-calendar)
+(set-custom-keybind "LEADER" "a c"
+                    #'calfw-org-open-calendar)
 ;; Open org agenda TODO entries
-(set-custom-keybind "LEADER" "a t" #'org-todo-list)
+(set-custom-keybind "LEADER" "a t"
+                    #'org-todo-list)
 ;; (LSP) open definition of hovered identifier
-(set-custom-keybind "LEADER" "d" #'lsp-goto-type-definition)
+(set-custom-keybind "LEADER" "d"
+                    #'lsp-goto-type-definition)
 ;; (LSP) show buffer errors with diagnostics
-(set-custom-keybind "LEADER" "e" #'flymake-show-buffer-diagnostics)
+(set-custom-keybind "LEADER" "e"
+                    #'flymake-show-buffer-diagnostics)
 ;; Drag selection up
-(set-custom-keybind "META" "p" #'drag-stuff-up)
+(set-custom-keybind "META" "p"
+                    #'drag-stuff-up)
 ;; Drag selection down
-(set-custom-keybind "META" "n" #'drag-stuff-down)
+(set-custom-keybind "META" "n"
+                    #'drag-stuff-down)
 
 
 
