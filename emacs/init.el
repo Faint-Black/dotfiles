@@ -1,9 +1,22 @@
-;;-----------------------------------------------------------------------+
+;;; -*- lexical-binding: t; -*-
+
+;;=======================================================================+
+;; HIGH EVAL PRIORITY CODE                                               |
+;;=======================================================================+
+
+;; No more annoying custom-generated code being appended to my config
+(setq custom-file null-device)
+
+;;=======================================================================+
 ;; UTILITIES                                                             |
-;;-----------------------------------------------------------------------+
+;;=======================================================================+
 
 ;; Check if emacs was invoked on a terminal with filepath arguments
 (defconst has-command-line-args (> (length command-line-args) 1))
+
+;; returns nil if the given filepath does not exist
+(defun null-if-file-does-not-exist(FILEPATH)
+  (if (file-exists-p FILEPATH) FILEPATH nil))
 
 ;; Keybind setter helper function
 (defun leader-keybind(KEY COMMAND)
@@ -29,37 +42,35 @@
    ((string= PREFIX "META") (meta-keybind KEY COMMAND))
    (t (error "Unknown prefix"))))
 
-
-
-
-
-;;-----------------------------------------------------------------------+
-;; USER-SPECIFIC FILEPATHS                                               |
-;;-----------------------------------------------------------------------+
+;;=======================================================================+
+;; USER-SPECIFIC VARIABLES                                               |
+;;=======================================================================+
 
 ;; Each function that uses these values first checks if they even exist
 ;; in the first place, so don't worry about not having these
 ;; files on your machine. My code is built to handle the exceptions by
 ;; simply doing nothing if the files do not exist.
-(defconst home-file "~/Desktop/notes/emacs/home.org")
-(defconst agenda-file "~/Desktop/notes/emacs/org-files/Calendar.org")
-(defconst cookbook-file "~/Desktop/notes/emacs/org-files/Recipes.org")
-(defconst feeds-file "~/Desktop/notes/emacs/org-files/Feed.org")
+(defconst user-org-files-alist
+  (list
+   (cons 'home-file
+         (null-if-file-does-not-exist "~/Desktop/notes/emacs/home.org"))
+   (cons 'agenda-file
+         (null-if-file-does-not-exist "~/Desktop/notes/emacs/org-files/Calendar.org"))
+   (cons 'cookbook-file
+         (null-if-file-does-not-exist "~/Desktop/notes/emacs/org-files/Recipes.org"))
+   (cons 'feeds-file
+         (null-if-file-does-not-exist "~/Desktop/notes/emacs/org-files/Feed.org"))))
 
 (if (not has-command-line-args)
-    (progn
-      (if (file-exists-p home-file)
-          (setq initial-buffer-choice home-file))
-      (if (file-exists-p agenda-file)
-          (setq org-agenda-files (list agenda-file)))))
+    (let ((my-org-home-file (alist-get 'home-file user-org-files-alist))
+          (my-org-agenda-file (alist-get 'agenda-file user-org-files-alist)))
+      (progn
+        (if my-org-home-file (setq initial-buffer-choice my-org-home-file))
+        (if my-org-agenda-file (setq org-agenda-files (list my-org-agenda-file))))))
 
-
-
-
-
-;;-----------------------------------------------------------------------+
+;;=======================================================================+
 ;; PACKAGE CONFIGURATIONS                                                |
-;;-----------------------------------------------------------------------+
+;;=======================================================================+
 
 ;; Set up package sources
 (setq package-archives (list (cons "melpa" "https://melpa.org/packages/")
@@ -106,6 +117,9 @@
   (rainbow-delimiters-depth-7-face ((t :foreground "#80FF80")))
   (rainbow-delimiters-depth-8-face ((t :foreground "#808080")))
   (rainbow-delimiters-depth-9-face ((t :foreground "#FF00FF"))))
+
+;; Brainfuck mode
+(use-package brainfuck-mode)
 
 ;; OpenGL shader mode
 (use-package glsl-mode)
@@ -212,21 +226,21 @@
 (use-package org-chef
   :config
   (setq org-capture-templates
-        (if (file-exists-p cookbook-file)
+        (if (alist-get 'cookbook-file user-org-files-alist)
             (list
              (list "c" "Cookbook"
                    'entry
-                   (list 'file cookbook-file)
+                   (list 'file (alist-get 'cookbook-file user-org-files-alist))
                    "%(org-chef-get-recipe-from-url)"
                    ':empty-lines 1)
              (list "z" "Protocol Cookbook"
                    'entry
-                   (list 'file cookbook-file)
+                   (list 'file (alist-get 'cookbook-file user-org-files-alist))
                    "%(org-chef-get-recipe-string-from-url \"%:link\")"
                    ':empty-lines 1)
              (list "m" "Manual Cookbook"
                    'entry
-                   (list 'file cookbook-file)
+                   (list 'file (alist-get 'cookbook-file user-org-files-alist))
                    (concat
                     "* %^{Recipe title: }\n"
                     "  :PROPERTIES:\n"
@@ -367,8 +381,8 @@
   :config
   (elfeed-org)
   (setq rmh-elfeed-org-files
-        (if (file-exists-p feeds-file)
-            (list feeds-file)
+        (if (alist-get 'feeds-file user-org-files-alist)
+            (list (alist-get 'feeds-file user-org-files-alist))
           nil)))
 
 ;; Elfeed customization addons
@@ -387,13 +401,9 @@
 (use-package blackjack)
 (use-package 2048-game)
 
-
-
-
-
-;;-----------------------------------------------------------------------+
+;;=======================================================================+
 ;; CORE EMACS CONFIGURATIONS                                             |
-;;-----------------------------------------------------------------------+
+;;=======================================================================+
 
 ;; Base theme
 (load-theme 'wombat t)
@@ -453,19 +463,17 @@
                ;; GuixSD PATH
                "/run/current-system/profile/bin")))
 
-
-
-
-
-;;-----------------------------------------------------------------------+
+;;=======================================================================+
 ;; CUSTOM HOOKS                                                          |
-;;-----------------------------------------------------------------------+
+;;=======================================================================+
 
 ;; On init
 (add-hook
  'emacs-startup-hook
  (lambda()
-   (if (and (file-exists-p agenda-file) (not has-command-line-args))
+   (if (and
+        (alist-get 'agenda-file user-org-files-alist)
+        (not has-command-line-args))
        (org-agenda-list))))
 
 ;; On programming buffers
@@ -504,13 +512,9 @@
                        (interactive)
                        (insert "    "))))) ; holy hack!
 
-
-
-
-
-;;-----------------------------------------------------------------------+
+;;=======================================================================+
 ;; CUSTOM KEYBINDS                                                       |
-;;-----------------------------------------------------------------------+
+;;=======================================================================+
 
 ;; Open terminal emulator window
 (set-custom-keybind "LEADER" "t"
@@ -537,13 +541,9 @@
 (set-custom-keybind "META" "n"
                     #'drag-stuff-down)
 
-
-
-
-
-;;-----------------------------------------------------------------------+
+;;=======================================================================+
 ;; ORG-MODE CONFIGURATIONS                                               |
-;;-----------------------------------------------------------------------+
+;;=======================================================================+
 
 ;; Text is indented according to it's header depth
 (setq org-startup-indented t)
@@ -565,50 +565,17 @@
 ;; Do not prompt for confirmation before running org-mode code blocks
 (setq org-confirm-babel-evaluate nil)
 
+;; For some reason, only elisp is on by default
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ (list
+  (cons 'haskell t)
+  (cons 'emacs-lisp t)
+  (cons 'latex t)))
+
 ;; Prevent buggy org-mode src block automatic indentation
 (setq org-edit-src-content-indentation 0)
 
 ;; Org agenda configurations
 (setq org-agenda-span 30)
 (setq org-agenda-format-date "%d %B %Y")
-
-
-
-
-
-;;-----------------------------------------------------------------------+
-;; ANNOYING AUTO-GENERATED CODE BY CUSTOM-SET, CONTAIN IT HERE!          |
-;;-----------------------------------------------------------------------+
-
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(org-block ((t (:background "#181818"))))
- '(org-block-begin-line ((t (:foreground "#505050" :background "#303030"))))
- '(org-block-end-line ((t (:foreground "#505050" :background "#303030"))))
- '(org-code ((t (:foreground "#faf678"))))
- '(org-level-1 ((t (:foreground "#df8735" :weight bold :height 1.0))))
- '(org-level-2 ((t (:foreground "#9e7ece" :weight bold :height 1.0))))
- '(org-level-3 ((t (:foreground "#47d055" :weight bold :height 1.0))))
- '(org-level-4 ((t (:foreground "#87f095" :weight bold :height 1.0))))
- '(org-level-5 ((t (:foreground "#f0ce87" :weight bold :height 1.0))))
- '(org-level-6 ((t (:foreground "#d1db5e" :weight bold :height 1.0))))
- '(org-meta-line ((t (:foreground "#808080" :background "#303030")))))
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(auth-source-save-behavior nil)
- '(package-selected-packages
-   '(org julia-repl julia-mode cmake-mode glsl-mode ledger-mode 2048-game elfeed-goodies geiser-guile geiser org-chef zig-mode org-superstar calfw-org calfw))
- '(safe-local-variable-values
-   '((org-latex-default-figure-position . "H")
-     (org-latex-src-block-backend . listings)
-     (org-html-style-default)
-     (org-html-validation-link)
-     (org-html-indent)
-     (org-confirm-babel-evaluate))))
