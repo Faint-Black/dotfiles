@@ -1,5 +1,6 @@
 ;;; -*- lexical-binding: t; -*-
 
+
 ;;=======================================================================+
 ;; HIGH EVAL PRIORITY CODE                                               |
 ;;=======================================================================+
@@ -7,6 +8,7 @@
 ;; No more annoying custom-generated code being appended to my config
 (setq custom-file null-device)
 
+
 ;;=======================================================================+
 ;; UTILITIES                                                             |
 ;;=======================================================================+
@@ -42,6 +44,7 @@
    ((string= PREFIX "META") (meta-keybind KEY COMMAND))
    (t (error "Unknown prefix"))))
 
+
 ;;=======================================================================+
 ;; USER-SPECIFIC VARIABLES                                               |
 ;;=======================================================================+
@@ -68,6 +71,7 @@
         (if my-org-home-file (setq initial-buffer-choice my-org-home-file))
         (if my-org-agenda-file (setq org-agenda-files (list my-org-agenda-file))))))
 
+
 ;;=======================================================================+
 ;; PACKAGE CONFIGURATIONS                                                |
 ;;=======================================================================+
@@ -129,6 +133,11 @@
 
 ;; Ziglang mode
 (use-package zig-mode)
+
+;; Lua mode
+(use-package lua-mode
+  :custom
+  (lua-indent-level 4))
 
 ;; Julia mode
 (use-package julia-mode)
@@ -343,16 +352,6 @@
   :custom
   (pdf-view-continuous nil))
 
-;; Live pdf preview pane
-;; (not the actual reader, just a package that automates the pdf viewing process)
-(use-package latex-preview-pane
-  :config
-  (define-key latex-preview-pane-mode-map (kbd "M-p") nil)
-  :custom
-  (latex-preview-pane-multifile-mode 'auctex)
-  (shell-escape-mode "-shell-escape")
-  (pdf-latex-command "pdflatex"))
-
 ;; Make auctex and latexmk work with eachother, necessary for synctex
 (use-package auctex-latexmk
   :config
@@ -393,6 +392,9 @@
 ;; Ledger accounting and budgeting
 (use-package ledger-mode)
 
+;; Org-mode diary mode
+(use-package org-journal)
+
 ;; Fun zone
 (use-package nyan-mode)
 (use-package fireplace)
@@ -401,6 +403,7 @@
 (use-package blackjack)
 (use-package 2048-game)
 
+
 ;;=======================================================================+
 ;; CORE EMACS CONFIGURATIONS                                             |
 ;;=======================================================================+
@@ -463,6 +466,7 @@
                ;; GuixSD PATH
                "/run/current-system/profile/bin")))
 
+
 ;;=======================================================================+
 ;; CUSTOM HOOKS                                                          |
 ;;=======================================================================+
@@ -482,19 +486,6 @@
  (lambda()
    (setq-local show-trailing-whitespace t)))
 
-;; On LaTeX buffers
-(add-hook
- 'LaTeX-mode-hook
- (lambda()
-   (if (y-or-n-p "Activate LaTeX preview pane on this buffer?")
-       (latex-preview-pane-mode))
-   (keymap-local-set "M-p"
-                     (lambda()
-                       (interactive)
-                       (latex-preview-pane-update)
-                       (call-process-shell-command "latexmk -gg -silent")
-                       (latex-preview-pane-update)))))
-
 ;; On text-editing buffers
 (add-hook
  'text-mode-hook
@@ -512,6 +503,7 @@
                        (interactive)
                        (insert "    "))))) ; holy hack!
 
+
 ;;=======================================================================+
 ;; CUSTOM KEYBINDS                                                       |
 ;;=======================================================================+
@@ -541,12 +533,50 @@
 (set-custom-keybind "META" "n"
                     #'drag-stuff-down)
 
+
 ;;=======================================================================+
 ;; ORG-MODE CONFIGURATIONS                                               |
 ;;=======================================================================+
 
-;; Text is indented according to it's header depth
+(set-face-attribute 'org-block
+                    nil :inherit nil
+                    :background "#181818")
+(set-face-attribute 'org-block-begin-line
+                    nil :inherit nil
+                    :foreground "#505050" :background "#303030")
+(set-face-attribute 'org-block-end-line
+                    nil :inherit nil
+                    :foreground "#505050" :background "#303030")
+(set-face-attribute 'org-code
+                    nil :inherit nil
+                    :foreground "#faf678")
+(set-face-attribute 'org-level-1
+                    nil :inherit nil
+                    :foreground "gold")
+(set-face-attribute 'org-level-2
+                    nil :inherit nil
+                    :foreground "spring green")
+(set-face-attribute 'org-level-3
+                    nil :inherit nil
+                    :foreground "dark turquoise")
+(set-face-attribute 'org-level-4
+                    nil :inherit nil
+                    :foreground "dark orange")
+(set-face-attribute 'org-level-5
+                    nil :inherit nil
+                    :foreground "dark violet")
+(set-face-attribute 'org-level-6
+                    nil :inherit nil
+                    :foreground "cyan")
+(set-face-attribute 'org-meta-line
+                    nil :inherit nil
+                    :foreground "#808080" :background "#303030")
+
+;; Indent text based on header level
 (setq org-startup-indented t)
+
+;; Hide asterisks
+(setq org-hide-leading-stars t)
 
 ;; Start headers as unfolded by default
 (setq org-startup-folded 'showall)
