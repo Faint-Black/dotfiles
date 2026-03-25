@@ -543,40 +543,35 @@
                     :background "#181818")
 (set-face-attribute 'org-block-begin-line
                     nil :inherit nil
-                    :foreground "#505050" :background "#303030")
-(set-face-attribute 'org-block-end-line
-                    nil :inherit nil
-                    :foreground "#505050" :background "#303030")
+                    :foreground "gray31" :background "gray19")
+(set-face-attribute 'org-block-end-line nil :inherit 'org-block-begin-line)
 (set-face-attribute 'org-code
                     nil :inherit nil
-                    :foreground "#faf678")
+                    :foreground "yellow")
 (set-face-attribute 'org-level-1
                     nil :inherit nil
-                    :foreground "gold")
+                    :foreground "dark orange" :weight 'bold)
 (set-face-attribute 'org-level-2
                     nil :inherit nil
-                    :foreground "spring green")
+                    :foreground "yellow green" :weight 'bold)
 (set-face-attribute 'org-level-3
                     nil :inherit nil
-                    :foreground "dark turquoise")
+                    :foreground "turquoise" :weight 'bold)
 (set-face-attribute 'org-level-4
                     nil :inherit nil
-                    :foreground "dark orange")
+                    :foreground "slate blue" :weight 'bold)
 (set-face-attribute 'org-level-5
                     nil :inherit nil
-                    :foreground "dark violet")
+                    :foreground "medium orchid" :weight 'bold)
 (set-face-attribute 'org-level-6
                     nil :inherit nil
-                    :foreground "cyan")
+                    :foreground "orange red" :weight 'bold)
 (set-face-attribute 'org-meta-line
                     nil :inherit nil
-                    :foreground "#808080" :background "#303030")
+                    :foreground "dim gray" :background "gray19")
 
-;; Indent text based on header level
-(setq org-startup-indented t)
-
-;; Hide asterisks
-(setq org-hide-leading-stars t)
+;; (do not) Indent text based on header level
+(setq org-startup-indented nil)
 
 ;; Start headers as unfolded by default
 (setq org-startup-folded 'showall)
