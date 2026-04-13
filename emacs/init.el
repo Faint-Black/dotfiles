@@ -594,6 +594,8 @@
 (org-babel-do-load-languages
  'org-babel-load-languages
  (list
+  (cons 'sqlite t)
+  (cons 'sql t)
   (cons 'haskell t)
   (cons 'emacs-lisp t)
   (cons 'latex t)))
